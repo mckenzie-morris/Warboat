@@ -134,7 +134,7 @@ export default (env) => {
       //     ],
       // 🚩  },
       // watch for changes in the views directory
-      // 🚩  watchFiles: ['views/**/*.ejs'], 🚩
+      watchFiles: ['src/**/*.html'],
     },
   };
 };

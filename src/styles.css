@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.light {
+    --primary: 255, 251, 218;
+    --secondary: 255, 236, 158;
+    --tertiary: 255, 187, 112;
+    --quaternary: 237, 148, 85;
+}
+
+.dark {
+    --primary: 19, 0, 0;
+    --secondary: 0, 51, 124;
+    --tertiary: 28, 130, 173;
+    --quaternary: 3, 201, 136;
+}
