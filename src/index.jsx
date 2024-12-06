@@ -5,6 +5,7 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Leaderboard from './pages/Leaderboard.jsx';
 import Options from './pages/Options.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -15,6 +16,7 @@ root.render(
       <Route path='/leaderboard' element={<Leaderboard />} />
       <Route path='/login' element={<Login />} />
       <Route path='/options' element={<Options />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   </BrowserRouter>
 );

@@ -16,7 +16,7 @@
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ \"./src/styles.css\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/client */ \"./node_modules/react-dom/client.js\");\n/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router */ \"./node_modules/react-router/dist/development/chunk-D52XG6IA.mjs\");\n/* harmony import */ var _pages_Home_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/Home.jsx */ \"./src/pages/Home.jsx\");\n\n\n\n// import App from './components/App.jsx';\n\n\nvar root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot)(document.getElementById('root'));\nroot.render(/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router__WEBPACK_IMPORTED_MODULE_4__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router__WEBPACK_IMPORTED_MODULE_4__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router__WEBPACK_IMPORTED_MODULE_4__.Route, {\n  path: \"/\",\n  element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_pages_Home_jsx__WEBPACK_IMPORTED_MODULE_3__[\"default\"], null)\n}))));\n\n//# sourceURL=webpack://warboat/./src/index.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ \"./src/styles.css\");\n/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ \"./node_modules/react-dom/client.js\");\n/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router */ \"./node_modules/react-router/dist/development/chunk-D52XG6IA.mjs\");\n/* harmony import */ var _pages_Home_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/Home.jsx */ \"./src/pages/Home.jsx\");\n/* harmony import */ var _pages_Login_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/Login.jsx */ \"./src/pages/Login.jsx\");\n/* harmony import */ var _pages_Leaderboard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/Leaderboard.jsx */ \"./src/pages/Leaderboard.jsx\");\n/* harmony import */ var _pages_Options_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/Options.jsx */ \"./src/pages/Options.jsx\");\n/* provided dependency */ var React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n\n\n\n\n\n\nvar root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(document.getElementById('root'));\nroot.render(/*#__PURE__*/React.createElement(react_router__WEBPACK_IMPORTED_MODULE_6__.BrowserRouter, null, /*#__PURE__*/React.createElement(react_router__WEBPACK_IMPORTED_MODULE_6__.Routes, null, /*#__PURE__*/React.createElement(react_router__WEBPACK_IMPORTED_MODULE_6__.Route, {\n  path: \"/\",\n  element: /*#__PURE__*/React.createElement(_pages_Home_jsx__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null)\n}), /*#__PURE__*/React.createElement(react_router__WEBPACK_IMPORTED_MODULE_6__.Route, {\n  path: \"/leaderboard\",\n  element: /*#__PURE__*/React.createElement(_pages_Leaderboard_jsx__WEBPACK_IMPORTED_MODULE_4__[\"default\"], null)\n}), /*#__PURE__*/React.createElement(react_router__WEBPACK_IMPORTED_MODULE_6__.Route, {\n  path: \"/login\",\n  element: /*#__PURE__*/React.createElement(_pages_Login_jsx__WEBPACK_IMPORTED_MODULE_3__[\"default\"], null)\n}), /*#__PURE__*/React.createElement(react_router__WEBPACK_IMPORTED_MODULE_6__.Route, {\n  path: \"/options\",\n  element: /*#__PURE__*/React.createElement(_pages_Options_jsx__WEBPACK_IMPORTED_MODULE_5__[\"default\"], null)\n}))));\n\n//# sourceURL=webpack://warboat/./src/index.jsx?");
 
 /***/ }),
 
@@ -27,6 +27,36 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sty
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* provided dependency */ var React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction Home() {\n  return /*#__PURE__*/React.createElement(\"div\", null, /*#__PURE__*/React.createElement(\"h1\", {\n    className: \"text-9xl\"\n  }, \"Home\"));\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Home);\n\n//# sourceURL=webpack://warboat/./src/pages/Home.jsx?");
+
+/***/ }),
+
+/***/ "./src/pages/Leaderboard.jsx":
+/*!***********************************!*\
+  !*** ./src/pages/Leaderboard.jsx ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* provided dependency */ var React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction Leaderboard() {\n  return /*#__PURE__*/React.createElement(\"div\", null, /*#__PURE__*/React.createElement(\"h1\", {\n    className: \"text-9xl\"\n  }, \"Leaderboard\"));\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Leaderboard);\n\n//# sourceURL=webpack://warboat/./src/pages/Leaderboard.jsx?");
+
+/***/ }),
+
+/***/ "./src/pages/Login.jsx":
+/*!*****************************!*\
+  !*** ./src/pages/Login.jsx ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* provided dependency */ var React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction Login() {\n  return /*#__PURE__*/React.createElement(\"div\", null, /*#__PURE__*/React.createElement(\"h1\", {\n    className: \"text-9xl\"\n  }, \"Login\"));\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Login);\n\n//# sourceURL=webpack://warboat/./src/pages/Login.jsx?");
+
+/***/ }),
+
+/***/ "./src/pages/Options.jsx":
+/*!*******************************!*\
+  !*** ./src/pages/Options.jsx ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* provided dependency */ var React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction Options() {\n  return /*#__PURE__*/React.createElement(\"div\", null, /*#__PURE__*/React.createElement(\"h1\", {\n    className: \"text-9xl\"\n  }, \"Options\"));\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Options);\n\n//# sourceURL=webpack://warboat/./src/pages/Options.jsx?");
 
 /***/ }),
 

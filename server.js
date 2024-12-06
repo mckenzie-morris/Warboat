@@ -16,9 +16,9 @@ app.use(express.static("dist"));
 app.use(express.urlencoded({ extended: true }));
 
 // any route not defined is 404'ed
-app.use("*", (req, res) => {
-    return res.status(404).send("404: Page not found- you silly goose");
-  });
+// app.use("*", (req, res) => {
+//     return res.status(404).send("404: Page not found- you silly goose");
+//   });
   
   // Global Error Handler
   app.use((error, req, res, next) => {
