@@ -126,6 +126,7 @@ export default (env) => {
     'Accept-Encoding' header is present on client's HTTP request) */
       compress: true,
       // redirects all 404 responses to index.html file
+      historyApiFallback: true,
       // 🚩 historyApiFallback: {
       //     // serve different files at different endpoints
       //     rewrites: [
@@ -133,7 +134,7 @@ export default (env) => {
       //       { from: /^\/notes/, to: '/notes.html' },
       //     ],
       // 🚩  },
-      // watch for changes in the views directory
+      // watch for changes to index.html
       watchFiles: ['src/**/*.html'],
     },
   };
