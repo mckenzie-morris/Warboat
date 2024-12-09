@@ -42,6 +42,8 @@ export default (env) => {
     // output filename for the entry chunk is extracted from output.filename
     output: {
       path: path.resolve(__dirname, 'dist'),
+      // always serve assets starting from the specified root
+      publicPath: '/',
       /* '[name]' will reflect specified entry names
     '[contenthash]' is used for cache busting, ensuring that browsers load the 
     latest version of assets when their contents change */
@@ -85,9 +87,11 @@ export default (env) => {
         React: 'react',
       }),
       new HtmlWebpackPlugin({
-        // The title to use for the generated HTML document
+        // the title to use for the generated HTML document
         title: 'Warboat!',
-        // The file to write the HTML to (defaults to 'index.html')
+        // 	adds the given favicon path to the output HTML
+        favicon: 'favicon.ico',
+        // the file to write the HTML to (defaults to 'index.html')
         filename: 'index.html',
         // relative or absolute path to the template (defaults to src/index.ejs if it exists)
         template: 'src/index.html',
