@@ -14,10 +14,8 @@
   "description": "",
   "dependencies": {
     "@designbycode/tailwindcss-text-shadow": "^2.2.1",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
     "@mui/base": "^5.0.0-beta.64",
-    "@mui/system": "^6.1.10",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "fluid-tailwind": "^1.0.4",
