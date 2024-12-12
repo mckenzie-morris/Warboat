@@ -1,33 +1,26 @@
-import { Modal } from '@mui/base/Modal';
-import { Button } from '@mui/base/Button';
-// utility for constructing className strings conditionally
-import clsx from 'clsx';
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
 
-
-function ReusableModal() {
-  const [openOrClosed, setOpenOrClosed] = React.useState(false);
-  const handleOpen = () => setOpenOrClosed(true);
-  const handleClose = () => setOpenOrClosed(false);
+function BasicModal() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <div>
       <Button
-        className='bg-green-600 rounded-md py-1 px-4'
+        className="rounded-md bg-green-600 px-4 py-1"
         onClick={handleOpen}
       >
-        Choose Theme!
+        Open modal
       </Button>
-      <Modal
-        open={openOrClosed}
-        onClose={handleClose}
-        slots={{ backdrop: (props) => <Backdrop {...props} handleClose={handleClose} /> }}
-      >
-        <div className='h-[250px] fixed z-10 w-[250px] bg-red-500'>
+      <Modal open={open} onClose={handleClose}>
+        <div className="fixed left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 bg-red-500">
           <Button
-            className='bg-green-600 rounded-md py-1 px-4'
+            className="rounded-md bg-green-600 px-4 py-1"
             onClick={handleClose}
           >
-            Close!
+            Close!{" "}
           </Button>
         </div>
       </Modal>
@@ -35,16 +28,4 @@ function ReusableModal() {
   );
 }
 
-const Backdrop = React.forwardRef((props, ref) => {
-  const { openOrClosed, handleClose } = props;
-  return (
-    <div
-      onClick={() => {handleClose()}}
-      className={clsx('fixed inset-0 bg-black bg-opacity-50 ', {
-        'base-Backdrop-open': openOrClosed,
-      })}
-    ></div>
-  );
-});
-
-export default ReusableModal;
+export default BasicModal;

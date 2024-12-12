@@ -1,10 +1,10 @@
-import Modal from '../components/Modal.jsx';
+import Modal from "../components/Modal.jsx";
 
 function Options() {
   return (
     <div>
-      <h1 className='text-9xl'>Options</h1>
-      <Modal/>
+      <h1 className="text-9xl">Options</h1>
+      <Modal />
     </div>
   );
 }

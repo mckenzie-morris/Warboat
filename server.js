@@ -1,6 +1,6 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 
@@ -19,15 +19,15 @@ app.use(express.urlencoded({ extended: true }));
 // app.use("*", (req, res) => {
 //     return res.status(404).send("404: Page not found- you silly goose");
 //   });
-  
-  // Global Error Handler
-  app.use((error, req, res, next) => {
-    const defaultMessage = "Uh-oh SpaghettiOs (something went wrong)!";
-    const message = error.message || defaultMessage;
-    console.log(message);
-    return res.status(500).send(message);
-  });
+
+// Global Error Handler
+app.use((error, req, res, next) => {
+  const defaultMessage = "Uh-oh SpaghettiOs (something went wrong)!";
+  const message = error.message || defaultMessage;
+  console.log(message);
+  return res.status(500).send(message);
+});
 
 app.listen(PORT, () => {
-    console.log(`server listening on port ${PORT}`)
-})
+  console.log(`server listening on port ${PORT}`);
+});

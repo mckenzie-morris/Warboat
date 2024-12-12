@@ -1,35 +1,30 @@
-import { Button } from '@mui/base/Button';
-import { Link } from 'react-router';
+import Button from "@mui/material/Button";
+import { Link } from "react-router";
 
 function Home() {
   return (
-    <div className='flex flex-col items-center justify-evenly h-screen'>
-      <h1 className='text-9xl'>Home</h1>
+    <div className="flex h-screen flex-col items-center justify-evenly">
+      <h1 className="text-9xl">Home</h1>
 
-      <Link to='/game'>
-        <Button className='bg-green-600 rounded-md py-1 px-4'>
+      <Link to="/game">
+        <Button className="rounded-md bg-green-600 px-4 py-1">
           Start Game
         </Button>
       </Link>
 
-      <Link to='/options'>
-        <Button className='bg-green-600 rounded-md py-1 px-4'>
-          Options
-        </Button>
+      <Link to="/options">
+        <Button className="rounded-md bg-green-600 px-4 py-1">Options</Button>
       </Link>
 
-      <Link to='/leaderboard'>
-        <Button className='bg-green-600 rounded-md py-1 px-4'>
+      <Link to="/leaderboard">
+        <Button className="rounded-md bg-green-600 px-4 py-1">
           Leaderboard
         </Button>
       </Link>
 
-      <Link to='/login'>
-        <Button className='bg-green-600 rounded-md py-1 px-4'>
-          Login
-        </Button>
+      <Link to="/login">
+        <Button className="rounded-md bg-green-600 px-4 py-1">Login</Button>
       </Link>
-
     </div>
   );
 }
