@@ -2,16 +2,86 @@
 @tailwind components;
 @tailwind utilities;
 
-.light {
-    --primary: 255, 251, 218;
-    --secondary: 255, 236, 158;
-    --tertiary: 255, 187, 112;
-    --quaternary: 237, 148, 85;
+.gold {
+  --primary: 254, 255, 210;
+  --secondary: 255, 238, 169;
+  --tertiary: 255, 191, 120;
+  --quaternary: 255, 125, 41;
 }
 
-.dark {
-    --primary: 19, 0, 0;
-    --secondary: 0, 51, 124;
-    --tertiary: 28, 130, 173;
-    --quaternary: 3, 201, 136;
+.neon {
+  --primary: 234, 4, 126;
+  --secondary: 255, 109, 40;
+  --tertiary: 252, 231, 0;
+  --quaternary: 0, 245, 255;
+}
+
+.pastel {
+  --primary: 236, 238, 129;
+  --secondary: 141, 223, 203;
+  --tertiary: 130, 160, 216;
+  --quaternary: 237, 183, 237;
+}
+
+.retro {
+  --primary: 245, 247, 248;
+  --secondary: 244, 206, 20;
+  --tertiary: 55, 151, 119;
+  --quaternary: 69, 71, 75;
+}
+
+.spring {
+  --primary: 253, 253, 189;
+  --secondary: 200, 255, 212;
+  --tertiary: 184, 232, 252;
+  --quaternary: 177, 175, 255;
+}
+
+.summer {
+  --primary: 239, 149, 149;
+  --secondary: 239, 180, 149;
+  --tertiary: 239, 213, 149;
+  --quaternary: 235, 239, 149;
+}
+
+.fall {
+  --primary: 108, 3, 69;
+  --secondary: 220, 107, 25;
+  --tertiary: 247, 197, 102;
+  --quaternary: 255, 248, 220;
+}
+
+.winter {
+  --primary: 82, 211, 216;
+  --secondary: 56, 135, 190;
+  --tertiary: 56, 65, 157;
+  --quaternary: 32, 14, 58;
+}
+
+.space {
+  --primary: 25, 24, 37;
+  --secondary: 134, 93, 255;
+  --tertiary: 227, 132, 255;
+  --quaternary: 255, 163, 253;
+}
+
+.temperate {
+  --primary: 214, 239, 216;
+  --secondary: 128, 175, 129;
+  --tertiary: 80, 141, 78;
+  --quaternary: 26, 83, 25;
+}
+
+.tropical {
+  --primary: 5, 146, 18;
+  --secondary: 6, 208, 1;
+  --tertiary: 155, 236, 0;
+  --quaternary: 243, 255, 144;
+}
+
+.sunset {
+  --primary: 255, 247, 138;
+  --secondary: 255, 227, 130;
+  --tertiary: 255, 196, 126;
+  --quaternary: 255, 173, 132;
 }

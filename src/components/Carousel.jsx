@@ -1,7 +1,17 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import testImg from "../assets/test.png";
-import pastel from "../assets/pastel.png";
+import pastel from "../assets/themes/pastel.png";
+import retro from "../assets/themes/retro.png";
+import neon from "../assets/themes/neon.png";
+import gold from "../assets/themes/gold.png";
+import spring from "../assets/themes/spring.png";
+import summer from "../assets/themes/summer.png";
+import fall from "../assets/themes/fall.png";
+import winter from "../assets/themes/winter.png";
+import space from "../assets/themes/space.png";
+import temperate from "../assets/themes/temperate.png";
+import tropical from "../assets/themes/tropical.png";
+import sunset from "../assets/themes/sunset.png";
 
 const responsive = {
   desktop: {
@@ -39,10 +49,42 @@ export default () => {
       dotListClass="custom-dot-list-style"
       itemClass="carousel-item-padding-40-px"
     >
-      <div><img src={pastel} alt="My Image" /></div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
+      <div className="text-center"> pastel
+        <img src={pastel} alt="pastel theme" />
+      </div>
+      <div className="text-center"> neon
+        <img src={neon} alt="neon theme" />
+      </div>
+      <div className="text-center"> retro
+        <img src={retro} alt="retro theme" />
+      </div>
+      <div className="text-center"> gold
+        <img src={gold} alt="gold theme" />
+      </div>
+      <div className="text-center"> winter
+        <img src={winter} alt="winter theme" />
+      </div>
+      <div className="text-center"> spring
+        <img src={spring} alt="spring theme" />
+      </div>
+      <div className="text-center"> summer
+        <img src={summer} alt="summer theme" />
+      </div>
+      <div className="text-center"> fall
+        <img src={fall} alt="fall theme" />
+      </div>
+      <div className="text-center"> temperate
+        <img src={temperate} alt="temperate theme" />
+      </div>
+      <div className="text-center"> tropical
+        <img src={tropical} alt="tropical theme" />
+      </div>
+      <div className="text-center"> sunset
+        <img src={sunset} alt="sunset theme" />
+      </div>
+      <div className="text-center"> space
+        <img src={space} alt="space theme" />
+      </div>
     </Carousel>
   );
 };

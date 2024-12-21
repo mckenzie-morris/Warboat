@@ -17,7 +17,7 @@ function BasicModal() {
       </Button>
       {/* change open={true} to open={open} after finishing edits */}
       <Modal open={true} onClose={handleClose}>
-        <div className="fixed left-1/2 top-1/2 h-[750px] w-[750px] -translate-x-1/2 -translate-y-1/2 bg-red-500">
+        <div className="fixed left-1/2 top-1/2 h-[750px] w-[1500px] -translate-x-1/2 -translate-y-1/2 bg-gray-500">
           <Button
             className="rounded-md bg-green-600 px-4 py-1"
             onClick={handleClose}
