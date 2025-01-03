@@ -45,20 +45,20 @@ export default () => {
       customTransition="all .5"
       transitionDuration={500}
       containerClass="carousel-container"
-      removeArrowOnDeviceType={["tablet", "mobile"]}
+      // removeArrowOnDeviceType={["tablet", "mobile"]}
       dotListClass="custom-dot-list-style"
       itemClass="carousel-item-padding-40-px"
     >
-      <div className="text-center"> pastel
+      <div className="text-center flex flex-col justify-center p-5"> pastel
         <img src={pastel} alt="pastel theme" />
       </div>
-      <div className="text-center"> neon
+      <div className="text-center flex flex-col justify-center p-5"> neon
         <img src={neon} alt="neon theme" />
       </div>
-      <div className="text-center"> retro
+      <div className="text-center flex flex-col justify-center p-5"> retro
         <img src={retro} alt="retro theme" />
       </div>
-      <div className="text-center"> gold
+      {/* <div className="text-center"> gold
         <img src={gold} alt="gold theme" />
       </div>
       <div className="text-center"> winter
@@ -84,7 +84,7 @@ export default () => {
       </div>
       <div className="text-center"> space
         <img src={space} alt="space theme" />
-      </div>
+      </div> */}
     </Carousel>
   );
 };
