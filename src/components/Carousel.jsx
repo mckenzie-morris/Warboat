@@ -49,13 +49,13 @@ export default () => {
       dotListClass="custom-dot-list-style"
       itemClass="carousel-item-padding-40-px"
     >
-      <div className="text-center flex flex-col justify-center p-5"> pastel
+      <div className="text-center flex flex-col items-center p-5"> pastel
         <img src={pastel} alt="pastel theme" />
       </div>
-      <div className="text-center flex flex-col justify-center p-5"> neon
+      <div className="text-center flex flex-col items-center p-5"> neon
         <img src={neon} alt="neon theme" />
       </div>
-      <div className="text-center flex flex-col justify-center p-5"> retro
+      <div className="text-center flex flex-col items-center p-5"> retro
         <img src={retro} alt="retro theme" />
       </div>
       {/* <div className="text-center"> gold

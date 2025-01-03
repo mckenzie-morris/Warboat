@@ -23,7 +23,7 @@ function BasicModal() {
             className="mx-auto rounded-md bg-green-600 px-4 py-1 mt-5"
             onClick={handleClose}
           >
-            Close!{" "}
+            Close!
           </Button>
         </div>
       </Modal>
