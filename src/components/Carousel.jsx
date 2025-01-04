@@ -49,6 +49,11 @@ export default () => {
       dotListClass="custom-dot-list-style"
       itemClass="carousel-item-padding-40-px"
     >
+
+      
+
+
+
       <div className="text-center flex flex-col items-center p-5"> pastel
         <img src={pastel} alt="pastel theme" />
       </div>
