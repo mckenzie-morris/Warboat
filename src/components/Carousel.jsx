@@ -13,6 +13,8 @@ import temperate from "../assets/themes/temperate.png";
 import tropical from "../assets/themes/tropical.png";
 import sunset from "../assets/themes/sunset.png";
 
+
+
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
@@ -31,6 +33,9 @@ const responsive = {
   },
 };
 export default () => {
+
+
+
   return (
     <Carousel
       swipeable={false}
@@ -49,18 +54,19 @@ export default () => {
       dotListClass="custom-dot-list-style"
       itemClass="carousel-item-padding-40-px"
     >
-
-      
-
-
-
-      <div className="text-center flex flex-col items-center p-5"> pastel
+      <div className="flex flex-col items-center p-5 text-center">
+        {" "}
+        pastel
         <img src={pastel} alt="pastel theme" />
       </div>
-      <div className="text-center flex flex-col items-center p-5"> neon
+      <div className="flex flex-col items-center p-5 text-center">
+        {" "}
+        neon
         <img src={neon} alt="neon theme" />
       </div>
-      <div className="text-center flex flex-col items-center p-5"> retro
+      <div className="flex flex-col items-center p-5 text-center">
+        {" "}
+        retro
         <img src={retro} alt="retro theme" />
       </div>
       {/* <div className="text-center"> gold
