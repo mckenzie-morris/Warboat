@@ -86,13 +86,6 @@
   --quaternary: 255, 173, 132;
 }
 
-.slick-prev {
-  left: 3% !important;
-  z-index: 1;
-  scale: 5;
-  translate: 0 250%;
-}
-.slick-next {
-  /* right: 3% !important; */
-  /* z-index: 1; */
+#modal-content {
+/* use Glassmorphism for styling here */
 }

@@ -35,25 +35,70 @@ function NextArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "red", right: '3%', zIndex: '1' }}
+      style={{
+        ...style,
+        display: "block",
+        right: "3%",
+        zIndex: "1",
+        scale: "2",
+        translate: "0 100%",
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function PrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: "block",
+        left: "3%",
+        zIndex: "1",
+        scale: "2",
+        translate: "0 100%",
+      }}
       onClick={onClick}
     />
   );
 }
 
 function Carousel() {
+  const [currentIdx, setIdx] = React.useState(0);
+
   const settings = {
+    // defers loading images until necessary, as opposed to all at once upon rendering the carousel
+    lazyLoad: true,
     arrows: true,
+    // index change callback
+    afterChange: (current) => {
+      setIdx(current);
+    },
     nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    // center current slide
+    centerMode: true,
+    centerPadding: "0px",
     dots: true,
+    // enable scrollable via dragging on desktop
+    draggable: false,
+    // go to slide on click
+    focusOnSelect: true,
     infinite: true,
+    // animation speed in milliseconds
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    // how many slides to show in one frame
+    slidesToShow: 5,
+    // how many slides to scroll at once
+    slidesToScroll: 1,
     initialSlide: 0,
+    // customize based on breakpoints
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 350,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -61,14 +106,29 @@ function Carousel() {
           dots: true,
         },
       },
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
     ],
   };
+
+  console.log("🚩", themes[currentIdx].replace(/^\/|\.png$/g, ""), "🚩");
+
   return (
     <div className="slider-container">
       <Slider {...settings}>
         {themes.map((theme, idx) => {
           return (
-            <div key={idx} className="">
+            <div key={idx}>
+              <h1 className="mt-5 text-center">
+                {theme.replace(/^\/|\.png$/g, "")}
+              </h1>
               <img className="mx-auto p-5" src={theme}></img>
             </div>
           );

@@ -16,15 +16,23 @@ function BasicModal() {
         Open modal
       </Button>
       {/* change open={true} to open={open} after finishing edits */}
-      <Modal open={true} onClose={handleClose}>
-        <div className="fixed left-1/2 top-1/2 flex max-h-full max-w-full -translate-x-1/2 -translate-y-1/2 flex-col justify-center bg-gray-500">
-          <Carousel className=""/>
-          <Button
-            className="mx-auto mt-5 rounded-md bg-green-600 px-4 py-1"
-            onClick={handleClose}
-          >
-            Close!
-          </Button>
+      <Modal open={open} onClose={handleClose}>
+        <div
+          id="modal-content"
+          className="fixed left-1/2 top-1/2 flex max-h-full max-w-full -translate-x-1/2 -translate-y-1/2 flex-col justify-center bg-gray-500"
+        >
+          <Carousel />
+          <div className="mx-auto">
+            <Button
+              className="mx-3 mb-5 mt-10 rounded-md bg-green-600 px-4 py-1"
+              onClick={handleClose}
+            >
+              Close!
+            </Button>
+            <Button className="mx-3 mb-5 mt-10 rounded-md bg-green-600 px-4 py-1">
+              Apply!
+            </Button>
+          </div>
         </div>
       </Modal>
     </div>
