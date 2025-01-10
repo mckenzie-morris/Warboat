@@ -14,6 +14,7 @@ import space from "../assets/themes/space.png";
 import temperate from "../assets/themes/temperate.png";
 import tropical from "../assets/themes/tropical.png";
 import sunset from "../assets/themes/sunset.png";
+import React from "react";
 
 const themes = [
   pastel,
@@ -67,7 +68,10 @@ function PrevArrow(props) {
 }
 
 function Carousel() {
+  //////////////////////////////////////////////////////////////////////////////
   const [currentIdx, setIdx] = React.useState(0);
+  // console.log("🚩", themes[currentIdx].replace(/^\/|\.png$/g, ""), "🚩");
+  //////////////////////////////////////////////////////////////////////////////
 
   const settings = {
     // defers loading images until necessary, as opposed to all at once upon rendering the carousel
@@ -76,6 +80,13 @@ function Carousel() {
     // index change callback
     afterChange: (current) => {
       setIdx(current);
+      //////////////////////////////////////////////////////////////////////////////
+      // console.log(themes[current].replace(/^\/|\.png$/g, ""));
+      // console.log(document.getElementsByTagName('html')[0])
+      const htmlElmt = document.getElementsByTagName('html')[0].classList
+      console.log(htmlElmt)
+      htmlElmt.replace(htmlElmt, themes[current].replace(/^\/|\.png$/g, ""))
+      //////////////////////////////////////////////////////////////////////////////
     },
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
@@ -117,8 +128,6 @@ function Carousel() {
       },
     ],
   };
-
-  console.log("🚩", themes[currentIdx].replace(/^\/|\.png$/g, ""), "🚩");
 
   return (
     <div className="slider-container">

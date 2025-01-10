@@ -22,6 +22,18 @@ function Fallback({ error }) {
   );
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+(() => {
+  const htmlElmt = document.getElementsByTagName('html')[0].classList
+  if (!htmlElmt.value) {
+    console.log(htmlElmt);
+    htmlElmt.add('pastel')
+    console.log(htmlElmt);
+  }
+})();
+//////////////////////////////////////////////////////////////////////////////
+
 const root = createRoot(document.getElementById("root"));
 
 root.render(
