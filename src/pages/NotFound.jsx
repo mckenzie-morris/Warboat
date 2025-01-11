@@ -1,4 +1,4 @@
-function NotFound() {
+const NotFound = () => {
   console.log("rendered");
   return (
     <div>

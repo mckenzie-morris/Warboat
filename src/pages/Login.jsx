@@ -1,4 +1,4 @@
-function Login() {
+const Login = () => {
   return (
     <div>
       <h1 className="text-9xl">Login</h1>

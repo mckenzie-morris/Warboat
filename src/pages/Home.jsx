@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
 
-function Home() {
+const Home = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-evenly">
       <h1 className="text-9xl">Home</h1>

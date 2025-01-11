@@ -14,7 +14,6 @@ import space from "../assets/themes/space.png";
 import temperate from "../assets/themes/temperate.png";
 import tropical from "../assets/themes/tropical.png";
 import sunset from "../assets/themes/sunset.png";
-import React from "react";
 
 const themes = [
   pastel,
@@ -31,7 +30,7 @@ const themes = [
   sunset,
 ];
 
-function NextArrow(props) {
+const NextArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -47,9 +46,9 @@ function NextArrow(props) {
       onClick={onClick}
     />
   );
-}
+};
 
-function PrevArrow(props) {
+const PrevArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -65,29 +64,13 @@ function PrevArrow(props) {
       onClick={onClick}
     />
   );
-}
+};
 
-function Carousel() {
-  //////////////////////////////////////////////////////////////////////////////
-  const [currentIdx, setIdx] = React.useState(0);
-  // console.log("🚩", themes[currentIdx].replace(/^\/|\.png$/g, ""), "🚩");
-  //////////////////////////////////////////////////////////////////////////////
-
+const Carousel = () => {
   const settings = {
     // defers loading images until necessary, as opposed to all at once upon rendering the carousel
     lazyLoad: true,
     arrows: true,
-    // index change callback
-    afterChange: (current) => {
-      setIdx(current);
-      //////////////////////////////////////////////////////////////////////////////
-      // console.log(themes[current].replace(/^\/|\.png$/g, ""));
-      // console.log(document.getElementsByTagName('html')[0])
-      const htmlElmt = document.getElementsByTagName('html')[0].classList
-      console.log(htmlElmt)
-      htmlElmt.replace(htmlElmt, themes[current].replace(/^\/|\.png$/g, ""))
-      //////////////////////////////////////////////////////////////////////////////
-    },
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     // center current slide
@@ -132,19 +115,39 @@ function Carousel() {
   return (
     <div className="slider-container">
       <Slider {...settings}>
+        {/* iterate through array of themes */}
         {themes.map((theme, idx) => {
           return (
             <div key={idx}>
               <h1 className="mt-5 text-center">
+                {/* pull name of theme from src */}
                 {theme.replace(/^\/|\.png$/g, "")}
               </h1>
-              <img className="mx-auto p-5" src={theme}></img>
+              <img
+                // when img is clicked, change theme to corresponding img
+                onClick={() => {
+                  // obtain html's class (theme)
+                  const htmlElmt =
+                    document.getElementsByTagName("html")[0].classList;
+                  // obtain the array elmt (theme) corresponding to the clicked img
+                  const clickedTheme = themes[idx].replace(/^\/|\.png$/g, "");
+                  /* if the clicked theme does not match the html's theme, make necessary changes 
+                  to html class list and session storage */
+                  if (clickedTheme !== htmlElmt[0]) {
+                    htmlElmt.replace(htmlElmt, clickedTheme);
+                    sessionStorage.setItem("theme", clickedTheme);
+                    console.log(`color theme switched to ${clickedTheme}`);
+                  }
+                }}
+                className="clickable-theme mx-auto p-5 hover:cursor-pointer"
+                src={theme}
+              ></img>
             </div>
           );
         })}
       </Slider>
     </div>
   );
-}
+};
 
 export default Carousel;

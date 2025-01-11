@@ -13,26 +13,33 @@ default, therefore material library's styles take precedence) */
 import { StyledEngineProvider } from "@mui/material/styles";
 
 // catch errors and render a fallback
-function Fallback({ error }) {
+const Fallback = ({ error }) => {
   return (
     <div>
       <h1>Uh-oh! Something went wrong:</h1>
       <p>{error.message}</p>
     </div>
   );
-}
+};
 
-
-//////////////////////////////////////////////////////////////////////////////
-(() => {
-  const htmlElmt = document.getElementsByTagName('html')[0].classList
-  if (!htmlElmt.value) {
-    console.log(htmlElmt);
-    htmlElmt.add('pastel')
-    console.log(htmlElmt);
+// IIFE for theme control
+const themeControl = (() => {
+  // obtain current theme (if defined)
+  const theme = sessionStorage.getItem("theme");
+  // obtain html's class (theme)
+  const htmlElmt = document.getElementsByTagName("html")[0].classList;
+  // if theme exists on session storage, and browser is reloaded, re-apply the theme to html
+  if (theme && !htmlElmt.value) {
+    htmlElmt.add(sessionStorage.getItem("theme"));
+    return console.log(`${theme} color theme added`);
+  }
+  // if theme does not exist on session storage, initialize it and apply it to html
+  else {
+    sessionStorage.setItem("theme", "pastel");
+    htmlElmt.add(sessionStorage.getItem("theme"));
+    return console.log("pastel color theme initialized");
   }
 })();
-//////////////////////////////////////////////////////////////////////////////
 
 const root = createRoot(document.getElementById("root"));
 
@@ -57,12 +64,3 @@ styling injected (Tailwind) after will take precedence */
     ,
   </StyledEngineProvider>,
 );
-
-/* React components can throw runtime errors for various reasons:
-
-1.) A missing prop causes a bug.
-2.) A component tries to access undefined data.
-3.) Third-party libraries malfunction.
-
-Without error boundaries, such errors would cause the whole app to crash, 
-leaving the user with a blank screen or a console error. */
