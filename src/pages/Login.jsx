@@ -1,7 +1,15 @@
+import Button from "@mui/material/Button";
+import { Link } from "react-router";
+
 const Login = () => {
   return (
     <div>
       <h1 className="text-9xl">Login</h1>
+      <Link to="/">
+        <Button className="rounded-md bg-green-600 px-4 py-1">
+          Return Home
+        </Button>
+      </Link>
     </div>
   );
 }

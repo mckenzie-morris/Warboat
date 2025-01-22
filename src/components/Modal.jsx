@@ -15,7 +15,7 @@ const BasicModal = () => {
       >
         Open modal
       </Button>
-      {/* change open={true} to open={open} after finishing edits */}
+      {/* change open={true} to open={open} after finishing styling edits */}
       <Modal open={open} onClose={handleClose}>
         <div
           id="modal-content"
