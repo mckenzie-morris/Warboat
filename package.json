@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack && webpack serve",
+    "dev": "webpack serve",
     "analyze": "webpack --env analyze=true"
   },
   "keywords": [],
