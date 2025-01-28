@@ -1,16 +1,17 @@
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
 ///////
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Lock from "@mui/icons-material/Lock";
 ///////
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const Login = () => {
+  const [createAcctState, setCreateAcctState] = React.useState(false);
+  console.log(createAcctState);
   return (
     <div>
       <h1 className="text-9xl">Login</h1>
@@ -27,7 +28,7 @@ const Login = () => {
           // change 'error' prop to a conditional (if )
           error={false}
           helperText="Incorrect entry."
-          id="input-with-icon-textfield"
+          id="input-username"
           label={
             <div className="flex">
               <AccountCircle />
@@ -41,7 +42,7 @@ const Login = () => {
           variant="outlined"
           error={false}
           helperText="Incorrect entry."
-          id="input-with-icon-textfield"
+          id="input-password"
           label={
             <div className="flex">
               <Lock />
@@ -49,6 +50,42 @@ const Login = () => {
             </div>
           }
         ></TextField>
+        {createAcctState && (
+          <div className="flex flex-col">
+            <TextField
+              className="my-5"
+              variant="outlined"
+              error={false}
+              helperText="Incorrect entry."
+              id="input-confirm-password"
+              label={
+                <div className="flex">
+                  <Lock />
+                  <p className="ms-1">password</p>
+                </div>
+              }
+            ></TextField>
+            <Button className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1">
+              Submit
+            </Button>
+          </div>
+        )}
+
+        <FormGroup>
+          <FormControlLabel
+            className="mx-auto"
+            control={
+              <Checkbox
+                id="input-create-account"
+                onChange={(event) => {
+                  setCreateAcctState(event.target.checked);
+                }}
+              />
+            }
+            label="Don't have an account? Sign up!"
+            labelPlacement="top"
+          />
+        </FormGroup>
       </div>
     </div>
   );
