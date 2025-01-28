@@ -1,12 +1,12 @@
 {
   "name": "warboat",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "client/src/index.jsx",
   "type": "module",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack serve",
-    "analyze": "webpack --env analyze=true"
+    "build": "webpack --config client/webpack.config.js",
+    "dev": "webpack serve --config client/webpack.config.js",
+    "analyze": "webpack --config client/webpack.config.js --env analyze=true"
   },
   "keywords": [],
   "author": "",

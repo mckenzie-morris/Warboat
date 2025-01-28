@@ -3,9 +3,8 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import path from "path";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
-import tailwindcss from "tailwindcss"; // Add this import
-import autoprefixer from "autoprefixer"; // Add this import
-
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -39,12 +38,13 @@ export default (env) => {
     point or points where to start the application bundling process. if an array is 
     passed then all items will be processed (into a single output file) */
     entry: {
-      index: path.resolve(__dirname, "client/src/index.jsx"),
+      index: path.resolve(__dirname, "src/index.jsx"),
     },
 
     // output filename for the entry chunk is extracted from output.filename
     output: {
-      path: path.resolve(__dirname, "client/dist"),
+      path: path.resolve(__dirname, "dist"),
+
       // always serve assets starting from the specified root
       publicPath: "/",
       /* '[name]' will reflect specified entry names
@@ -65,8 +65,17 @@ export default (env) => {
           use: [
             "style-loader",
             "css-loader",
-            { loader: "postcss-loader", options: { postcssOptions: { plugins: [tailwindcss('./client/tailwind.config.js'),
-              autoprefixer,]}} },
+            {
+              loader: "postcss-loader",
+              options: {
+                postcssOptions: {
+                  plugins: [
+                    tailwindcss(path.resolve(__dirname, "tailwind.config.js")), // Corrected Tailwind path
+                    autoprefixer,
+                  ],
+                },
+              },
+            },
           ],
         },
 
@@ -98,11 +107,12 @@ export default (env) => {
         // the title to use for the generated HTML document
         title: "Warboat!",
         // 	adds the given favicon path to the output HTML
-        favicon: "favicon.ico",
+        favicon: path.resolve(__dirname, "src/favicon.ico"),
         // the file to write the HTML to (defaults to 'index.html')
         filename: "index.html",
         // relative or absolute path to the template (defaults to src/index.ejs if it exists)
-        template: "client/src/index.html",
+        template: path.resolve(__dirname, "src/index.html"),
+
         // 'chunks' specifies which js bundle to inject into the generated HTML file
         chunks: ["index"],
       }),
