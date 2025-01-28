@@ -4,6 +4,7 @@
   "main": "client/src/index.jsx",
   "type": "module",
   "scripts": {
+    "start": "nodemon server/server.js",
     "build": "webpack --config client/webpack.config.js",
     "dev": "webpack serve --config client/webpack.config.js",
     "analyze": "webpack --config client/webpack.config.js --env analyze=true"

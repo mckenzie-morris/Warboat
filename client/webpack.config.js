@@ -107,11 +107,11 @@ export default (env) => {
         // the title to use for the generated HTML document
         title: "Warboat!",
         // 	adds the given favicon path to the output HTML
-        favicon: path.resolve(__dirname, "src/favicon.ico"),
+        favicon: path.resolve(__dirname, "public/favicon.ico"),
         // the file to write the HTML to (defaults to 'index.html')
         filename: "index.html",
         // relative or absolute path to the template (defaults to src/index.ejs if it exists)
-        template: path.resolve(__dirname, "src/index.html"),
+        template: path.resolve(__dirname, "public/index.html"),
 
         // 'chunks' specifies which js bundle to inject into the generated HTML file
         chunks: ["index"],
