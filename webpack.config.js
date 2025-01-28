@@ -1,8 +1,11 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import webpack from 'webpack';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import path from "path";
+import { fileURLToPath } from "url";
+import webpack from "webpack";
+import tailwindcss from "tailwindcss"; // Add this import
+import autoprefixer from "autoprefixer"; // Add this import
+
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -26,7 +29,7 @@ export default (env) => {
     module names human-readable             module names shortened or hashed
     tree shaking disabled                   tree shaking enabled
     process.env.NODE_ENV = 'development'    process.env.NODE_ENV = 'production' */
-    mode: 'development',
+    mode: "development",
     /* automatically update the dist folder when source files change.
     in DevServer, watch mode is enabled by default */
     // 🚩 watch: true, 🚩
@@ -36,45 +39,50 @@ export default (env) => {
     point or points where to start the application bundling process. if an array is 
     passed then all items will be processed (into a single output file) */
     entry: {
-      index: path.resolve(__dirname, 'client/src/index.jsx'),
+      index: path.resolve(__dirname, "client/src/index.jsx"),
     },
 
     // output filename for the entry chunk is extracted from output.filename
     output: {
-      path: path.resolve(__dirname, 'client/dist'),
+      path: path.resolve(__dirname, "client/dist"),
       // always serve assets starting from the specified root
-      publicPath: '/',
+      publicPath: "/",
       /* '[name]' will reflect specified entry names
     '[contenthash]' is used for cache busting, ensuring that browsers load the 
     latest version of assets when their contents change */
-      filename: '[name]-bundle[contenthash].js',
+      filename: "[name]-bundle[contenthash].js",
       // clean the output directory before emit (delete files in 'dist' folder)
       clean: true,
       /* the same as output.filename, but for Asset Modules AKA non-JavaScript 
     resources (fonts, icons, etc) */
-      assetModuleFilename: '[name][ext]',
+      assetModuleFilename: "[name][ext]",
     },
     // determines how the different types of modules within a project will be treated
     module: {
       rules: [
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader', 'postcss-loader'],
+          use: [
+            "style-loader",
+            "css-loader",
+            { loader: "postcss-loader", options: { postcssOptions: { plugins: [tailwindcss('./client/tailwind.config.js'),
+              autoprefixer,]}} },
+          ],
         },
 
         {
           test: /.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
+              presets: ["@babel/preset-env", "@babel/preset-react"],
             },
           },
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
+          type: "asset/resource",
         },
       ],
     },
@@ -84,19 +92,19 @@ export default (env) => {
       /* tells webpack to automatically load the react module and assign it to the global 
       variable React- can now use React in modules without explicitly importing it */
       new webpack.ProvidePlugin({
-        React: 'react',
+        React: "react",
       }),
       new HtmlWebpackPlugin({
         // the title to use for the generated HTML document
-        title: 'Warboat!',
+        title: "Warboat!",
         // 	adds the given favicon path to the output HTML
-        favicon: 'favicon.ico',
+        favicon: "favicon.ico",
         // the file to write the HTML to (defaults to 'index.html')
-        filename: 'index.html',
+        filename: "index.html",
         // relative or absolute path to the template (defaults to src/index.ejs if it exists)
-        template: 'client/src/index.html',
+        template: "client/src/index.html",
         // 'chunks' specifies which js bundle to inject into the generated HTML file
-        chunks: ['index'],
+        chunks: ["index"],
       }),
       //   new HtmlWebpackPlugin({
       //     title: "The other HTML file's title",
@@ -117,12 +125,12 @@ export default (env) => {
       // 🚩 ],
       static: {
         // serve files from this location
-        directory: path.resolve(__dirname, 'dist'),
+        directory: path.resolve(__dirname, "dist"),
       },
       // which port to serve from
       port: 8080,
       // open a new tab (and open a specified page) automatically
-      open: ['/'],
+      open: ["/"],
       // use hot module reloading
       hot: true,
       /* enable gzip compression- compression algo that compresses 
@@ -139,7 +147,7 @@ export default (env) => {
       //     ],
       // 🚩  },
       // watch for changes to index.html
-      watchFiles: ['src/**/*.html'],
+      watchFiles: ["src/**/*.html"],
     },
   };
 };
