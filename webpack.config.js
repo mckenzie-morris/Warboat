@@ -36,7 +36,7 @@ export default (env) => {
     point or points where to start the application bundling process. if an array is 
     passed then all items will be processed (into a single output file) */
     entry: {
-      index: path.resolve(__dirname, 'src/index.jsx'),
+      index: path.resolve(__dirname, 'client/src/index.jsx'),
     },
 
     // output filename for the entry chunk is extracted from output.filename
@@ -94,7 +94,7 @@ export default (env) => {
         // the file to write the HTML to (defaults to 'index.html')
         filename: 'index.html',
         // relative or absolute path to the template (defaults to src/index.ejs if it exists)
-        template: 'src/index.html',
+        template: 'client/src/index.html',
         // 'chunks' specifies which js bundle to inject into the generated HTML file
         chunks: ['index'],
       }),

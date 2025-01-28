@@ -6,7 +6,7 @@ export default {
     files: [
       /* scan all files (of specified types below) for their use of Tailwind classes.
     Only the styles actually used will be included the final CSS output */
-      "./src/**/*.{html,js,jsx}", // scan all html, js, and jsx files in src folder
+      "./client/src/**/*.{html,js,jsx}", // scan all html, js, and jsx files in src folder
     ],
     extract,
   },
