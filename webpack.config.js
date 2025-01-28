@@ -41,7 +41,7 @@ export default (env) => {
 
     // output filename for the entry chunk is extracted from output.filename
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'client/dist'),
       // always serve assets starting from the specified root
       publicPath: '/',
       /* '[name]' will reflect specified entry names

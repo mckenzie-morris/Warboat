@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const PORT = 3000;
 
 // serve static files from 'dist' folder in root directory
-app.use(express.static("dist"));
+app.use(express.static("client/dist"));
 
 // parse URL-encoded data submitted by forms (makes accessible through req.body)
 app.use(express.urlencoded({ extended: true }));
