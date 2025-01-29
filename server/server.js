@@ -1,6 +1,10 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+const dbURI = process.env.MONGO_URI;
 
 const app = express();
 
@@ -28,6 +32,13 @@ app.use((error, req, res, next) => {
   return res.status(500).send(message);
 });
 
-app.listen(PORT, () => {
-  console.log(`server listening on port ${PORT}`);
-});
+mongoose.connect(dbURI).then( () => {
+  console.log('connected to MongoDB')
+  app.listen(PORT, () => {
+    console.log(`server listening on port ${PORT}`);
+  });
+  
+}).catch((error) => {
+  console.log(error)
+})
+

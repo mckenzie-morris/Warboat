@@ -6,9 +6,10 @@ import Lock from "@mui/icons-material/Lock";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import loginHooksAndLogic from "../hooksAndLogic/login"
 
 const Login = () => {
-  const [createAcctState, setCreateAcctState] = React.useState(false);
+  const {createAcctState, setCreateAcctState} = loginHooksAndLogic()
   console.log(createAcctState);
   return (
     <div>
@@ -48,6 +49,12 @@ const Login = () => {
             </div>
           }
         ></TextField>
+        {!createAcctState && (
+          <Button id="button-login" className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1">
+            Submit
+          </Button>
+        )}
+
         {createAcctState && (
           <div className="flex flex-col">
             <TextField
@@ -63,7 +70,7 @@ const Login = () => {
                 </div>
               }
             ></TextField>
-            <Button className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1">
+            <Button id="button-create-acct" className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1">
               Submit
             </Button>
           </div>
