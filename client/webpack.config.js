@@ -3,8 +3,6 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import path from "path";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
-import tailwindcss from "tailwindcss";
-import autoprefixer from "autoprefixer";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -62,21 +60,7 @@ export default (env) => {
       rules: [
         {
           test: /\.css$/,
-          use: [
-            "style-loader",
-            "css-loader",
-            {
-              loader: "postcss-loader",
-              options: {
-                postcssOptions: {
-                  plugins: [
-                    tailwindcss(path.resolve(__dirname, "tailwind.config.js")), // Corrected Tailwind path
-                    autoprefixer,
-                  ],
-                },
-              },
-            },
-          ],
+          use: ["style-loader", "css-loader", "postcss-loader"],
         },
 
         {
@@ -107,12 +91,11 @@ export default (env) => {
         // the title to use for the generated HTML document
         title: "Warboat!",
         // 	adds the given favicon path to the output HTML
-        favicon: path.resolve(__dirname, "public/favicon.ico"),
+        favicon: 'client/public/favicon.ico',
         // the file to write the HTML to (defaults to 'index.html')
         filename: "index.html",
-        // relative or absolute path to the template (defaults to src/index.ejs if it exists)
-        template: path.resolve(__dirname, "public/index.html"),
-
+        // relative or absolute path to the template (defaults to src/index.js if it exists)
+        template: 'client/public/index.html',
         // 'chunks' specifies which js bundle to inject into the generated HTML file
         chunks: ["index"],
       }),
