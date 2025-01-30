@@ -2,16 +2,15 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
+const app = express();
+const PORT = 3000;
 import dotenv from "dotenv";
 dotenv.config();
 const dbURI = process.env.MONGO_URI;
 
-const app = express();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 3000;
 
 // serve static files from 'dist' folder in root directory
 app.use(express.static("client/dist"));
@@ -32,13 +31,16 @@ app.use((error, req, res, next) => {
   return res.status(500).send(message);
 });
 
-mongoose.connect(dbURI).then( () => {
-  console.log('connected to MongoDB')
+const startServer = (async () => {
+  try {
+    await mongoose.connect(dbURI).then(() => {
+      console.log("✅ connected to MongoDB");
+    });
+  } catch (error) {
+    console.log("❌ ", error);
+  }
+
   app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
   });
-  
-}).catch((error) => {
-  console.log(error)
-})
-
+})();

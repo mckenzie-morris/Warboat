@@ -1,6 +1,6 @@
-const loginHooksAndLogic = () => {
+const loginHooks = () => {
   const [createAcctState, setCreateAcctState] = React.useState(false);
   return {createAcctState, setCreateAcctState}
 };
 
-export default loginHooksAndLogic
+export default loginHooks

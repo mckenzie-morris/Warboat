@@ -6,10 +6,10 @@ import Lock from "@mui/icons-material/Lock";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import loginHooksAndLogic from "../hooksAndLogic/login"
+import loginHooks from "../hooks/login"
 
 const Login = () => {
-  const {createAcctState, setCreateAcctState} = loginHooksAndLogic()
+  const {createAcctState, setCreateAcctState} = loginHooks()
   console.log(createAcctState);
   return (
     <div>
