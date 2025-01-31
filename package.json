@@ -12,7 +12,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "turn-based game",
   "dependencies": {
     "@designbycode/tailwindcss-text-shadow": "^2.2.1",
     "@emotion/react": "^11.14.0",
@@ -20,6 +20,7 @@
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.2.0",
     "cookie-parser": "^1.4.7",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "fluid-tailwind": "^1.0.4",
@@ -31,7 +32,8 @@
     "react-error-boundary": "^4.1.2",
     "react-router": "^7.0.2",
     "react-slick": "^0.30.3",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
