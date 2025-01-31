@@ -35,18 +35,15 @@ const logEvents = async (message, logFileName) => {
 
 const logger = (req, res, next) => {
   // 🚩 log all requests 🚩
-  //   logEvents(`${req.method}\t${req.url}\t${req.headers.origin}`, "reqLog.log");
-  //   console.log(`${req.method} ${req.path}`);
-  //   next();
+  // logEvents(`${req.method}\t${req.url}`, "reqLog.log");
+  // console.log(`${req.method} ${req.path}`);
+  // next();
 
   // runs when the response is sent
   res.on("finish", () => {
     // only log failed requests
     if (res.statusCode >= 400) {
-      logEvents(
-        `${req.method}\t${req.url}\t${req.headers.origin}`,
-        "reqLog.log",
-      );
+      logEvents(`${req.method}\t${req.url}`, "requestLog.log");
     }
   });
   console.log(`${req.method} ${req.path}`);
