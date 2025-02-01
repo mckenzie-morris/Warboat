@@ -7,10 +7,10 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { logger } from "./middlewares/logger.js";
 import errorHandler from "./middlewares/error-handler.js";
-const PORT = 3000;
 import dotenv from "dotenv";
 dotenv.config();
 const dbURI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 3000;
 
 /* import.meta.url provides the URL of the current module file (as a string), 
 and must be converted to a file path using fileURLToPath(import.meta.url)
