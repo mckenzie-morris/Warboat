@@ -1,21 +1,22 @@
 import mongoose from "mongoose";
 import { format } from "date-fns";
 
-const userSchema = mongoose.Schema({
+const highestScoreSchema = mongoose.Schema({
   username: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  },
+  score: {
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  acctCreated: {
+  date: {
     type: String,
     default: `${format(new Date(), "MM/dd/yyyy\tHH:mm:ss")}`,
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const HighestScore = mongoose.model('HighestScore', highestScoreSchema);
 
-export default User
+export default HighestScore

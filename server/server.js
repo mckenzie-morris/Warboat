@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 const app = express();
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { logger } from "./middlewares/logger.js";
+import logEvents from "./utils/logEvents.js";
+import logger from "./middlewares/erroneous-request-logger.js";
 import errorHandler from "./middlewares/error-handler.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -21,9 +22,6 @@ const __filename = fileURLToPath(import.meta.url);
 
 // path.dirname(__filename) extracts the directory path from __filename
 const __dirname = path.dirname(__filename);
-
-// custom middlware that will log any request with a status code >= 400
-app.use(logger);
 
 // enable Cross-Origin Resource Sharing at the specified origin
 app.use(
@@ -43,14 +41,17 @@ app.use(
 // parses incoming requests with JSON payloads and makes them available in req.body
 app.use(express.json());
 
+// parse URL-encoded data submitted by forms (makes accessible through req.body)
+app.use(express.urlencoded({ extended: true }));
+
 // parses Cookie header and populates req.cookies with an object keyed by the cookie names
 app.use(cookieParser());
 
+// custom middlware that will log any request with a status code >= 400
+app.use(logger);
+
 // serve static files (webpack bundle) from 'dist' folder in root directory
 app.use(express.static("client/dist"));
-
-// parse URL-encoded data submitted by forms (makes accessible through req.body)
-app.use(express.urlencoded({ extended: true }));
 
 // any route not defined is 404'ed
 // app.use("*", (req, res) => {
@@ -69,12 +70,23 @@ app.use(errorHandler);
 
 const startServer = (async () => {
   try {
-    await mongoose.connect(dbURI).then(() => {
-      console.log("✅ connected to MongoDB");
-    });
+    await mongoose.connect(dbURI);
+    console.log("✅ connected to MongoDB");
   } catch (error) {
-    console.log("❌ ", error);
+    console.error("❌ ", error);
   }
+
+  mongoose.connection.on("error", (error) => {
+    // from node.js docs ▼
+    // error.code property is a string representing the error code
+    // error.message is a system-provided human-readable description of the error
+    // error.info is an object with details about the error condition
+    // error.syscall property is a string describing the syscall that failed
+    logEvents(
+      `${error.code}: ${error.message}\t${error.info}\t${error.syscall}`,
+      "mongoErrorLog.log",
+    );
+  });
 
   app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
