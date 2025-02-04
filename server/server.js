@@ -3,12 +3,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 const app = express();
+import 'express-async-errors'
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import logEvents from "./utils/logEvents.js";
 import logger from "./middlewares/erroneous-request-logger.js";
 import errorHandler from "./middlewares/error-handler.js";
 import dotenv from "dotenv";
+import wildcardRoute from "./routes/wildcardRoute.js";
 dotenv.config();
 const dbURI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
@@ -53,18 +55,8 @@ app.use(logger);
 // serve static files (webpack bundle) from 'dist' folder in root directory
 app.use(express.static("client/dist"));
 
-// any route not defined is 404'ed
-// app.use("*", (req, res) => {
-//     return res.status(404).send("404: Page not found- you silly goose");
-//   });
-
-// Global Error Handler
-// app.use((error, req, res, next) => {
-//   const defaultMessage = "Uh-oh SpaghettiOs (something went wrong)!";
-//   const message = error.message || defaultMessage;
-//   console.log(message);
-//   return res.status(500).send(message);
-// });
+// handle browser refreshes (at endpoints other than root) and unknown roots
+app.use(wildcardRoute)
 
 app.use(errorHandler);
 

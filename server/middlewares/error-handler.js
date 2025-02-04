@@ -1,4 +1,4 @@
-import logEvents from "../utils/logEvents";
+import logEvents from "../utils/logEvents.js";
 
 const errorHandler = (error, req, res, next) => {
   // call logEvents function passing in the message and logFileName arguments
