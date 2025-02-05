@@ -3,7 +3,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 const app = express();
-import "express-async-errors";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import logEvents from "./utils/logEvents.js";
