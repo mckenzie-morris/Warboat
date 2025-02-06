@@ -1,7 +1,6 @@
 import Profile from "../models/profile.js";
 import bcrypt from "bcrypt";
 
-// GET
 const getAllProfiles = async (req, res, next) => {
   try {
     // .lean() returns plain JavaScript objects instead of full Mongoose documents
@@ -17,18 +16,6 @@ const getAllProfiles = async (req, res, next) => {
   }
 };
 
-// GET 🚩🚩🚩🚩🚩🚩
-// const getProfile = async (req, res) => {
-//   const { username, password } = req.body;
-//   if (!username || !password) {
-//     return res.status(400).json({ message: "both fields required" });
-//   }
-
-//   const query = Profile.where({ username: username, password: password });
-//   const profile = await query.findOne().lean().exec();
-// };
-
-// POST
 const createNewProfile = async (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -58,19 +45,6 @@ const createNewProfile = async (req, res, next) => {
   }
 };
 
-// PATCH 🚩🚩🚩🚩🚩🚩
-const updateProfileUsername = async (req, res) => {
-  const { username, password } = req.body;
-};
-
-// PATCH 🚩🚩🚩🚩🚩🚩
-const updateProfilePassword = async (req, res) => {
-  const { username, password } = req.body;
-};
-
-/////////////////////////////////////////////////////////////////////////
-
-// DELETE
 const deleteProfile = async (req, res, next) => {
   try {
     const { username: submittedUsername, password: submittedPassword } =
@@ -102,11 +76,4 @@ const deleteProfile = async (req, res, next) => {
   }
 };
 
-export {
-  getAllProfiles,
-  // getProfile,
-  createNewProfile,
-  updateProfileUsername,
-  updateProfilePassword,
-  deleteProfile,
-};
+export { getAllProfiles, createNewProfile, deleteProfile };

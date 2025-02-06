@@ -9,9 +9,9 @@ import logEvents from "./utils/logEvents.js";
 import logger from "./middlewares/erroneous-request-logger.js";
 import errorHandler from "./middlewares/error-handler.js";
 import dotenv from "dotenv";
+dotenv.config();
 import wildcardRoute from "./routes/wildcardRoute.js";
 import profileRoutes from "./routes/profileRoutes.js";
-dotenv.config();
 const dbURI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
 
