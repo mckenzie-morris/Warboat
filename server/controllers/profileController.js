@@ -18,11 +18,11 @@ const getAllProfiles = async (req, res, next) => {
 
 const createNewProfile = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
+    const { submittedUsername, submittedPassword } = req.body;
+    if (!submittedUsername || !submittedPassword) {
       return res.status(400).json({ message: "both fields required" });
     }
-    const duplicate = await Profile.findOne({ username }).lean().exec();
+    const duplicate = await Profile.findOne({ submittedUsername }).lean().exec();
     if (duplicate) {
       // status 409: conflict; when a request conflicts with the current state of the server
       return res.status(409).json({ message: "username already exists" });
@@ -31,9 +31,9 @@ const createNewProfile = async (req, res, next) => {
   
   adding salts to hashed passwords defends against rainbow table attacks (precomputed 
   list of common password hashes) and makes brute-force attacks computationally expensive */
-    const hashedPwd = await bcrypt.hash(password, 10);
+    const hashedPwd = await bcrypt.hash(submittedPassword, 10);
 
-    const profileDoc = { username, password: hashedPwd };
+    const profileDoc = { submittedUsername, password: hashedPwd };
     const profile = await Profile.create(profileDoc);
     // .create() returns a promise that resolves to the newly created document (profile)
     if (profile) {
@@ -63,7 +63,7 @@ const deleteProfile = async (req, res, next) => {
 
     const isMatch = await bcrypt.compare(submittedPassword, profile.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "password incorrect" });
+      return res.status(401).json({ message: "password incorrect" });
     }
 
     const deletedProfile = await Profile.findByIdAndDelete(profile._id);
