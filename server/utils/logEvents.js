@@ -1,6 +1,11 @@
+// for manipulating JavaScript dates in a browser & Node.js
 import { format } from "date-fns";
+// produces array of 16 random (purely) bytes (0-255)
 import { v4 as uuidv4 } from "uuid";
+// provides methods like fs.readFile(), fs.writeFile(), fs.appendFile(), etc.
 import fs from "fs";
+/* promise-based (async/await) version of the file system module; all methods 
+return Promises instead of using callbacks */
 import fsPromises from "fs/promises";
 import { fileURLToPath } from "url";
 import path from "path";
