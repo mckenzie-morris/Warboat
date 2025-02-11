@@ -6,12 +6,14 @@ const getAllProfiles = async (req, res, next) => {
     // .lean() returns plain JavaScript objects instead of full Mongoose documents
     // using .exec() with an await gives better strack traces
     const profiles = await Profile.find({}).lean().exec();
-    // ? = optional chaining
-    if (!profiles?.length) {
+    // if no profiles are found, return 404
+    if (!profiles.length) {
       return res.status(404).json({ message: "No profiles found" });
     }
+    // return found profiles
     return res.status(200).json(profiles);
   } catch (error) {
+    // if an error occurs, pass it to Express default error handler
     return next(error);
   }
 };
@@ -22,7 +24,9 @@ const createNewProfile = async (req, res, next) => {
     if (!submittedUsername || !submittedPassword) {
       return res.status(400).json({ message: "both fields required" });
     }
-    const duplicate = await Profile.findOne({ submittedUsername }).lean().exec();
+    const duplicate = await Profile.findOne({ username: submittedUsername })
+      .lean()
+      .exec();
     if (duplicate) {
       // status 409: conflict; when a request conflicts with the current state of the server
       return res.status(409).json({ message: "username already exists" });
@@ -33,7 +37,7 @@ const createNewProfile = async (req, res, next) => {
   list of common password hashes) and makes brute-force attacks computationally expensive */
     const hashedPwd = await bcrypt.hash(submittedPassword, 10);
 
-    const profileDoc = { submittedUsername, password: hashedPwd };
+    const profileDoc = { username: submittedUsername, password: hashedPwd };
     const profile = await Profile.create(profileDoc);
     // .create() returns a promise that resolves to the newly created document (profile)
     if (profile) {
@@ -47,7 +51,7 @@ const createNewProfile = async (req, res, next) => {
 
 const deleteProfile = async (req, res, next) => {
   try {
-    const { username: submittedUsername, password: submittedPassword } =
+    const { submittedUsername, submittedPassword } =
       req.body;
 
     if (!submittedUsername || !submittedPassword) {
@@ -61,11 +65,12 @@ const deleteProfile = async (req, res, next) => {
     }
     console.log("profile found ✅\n", profile);
 
+    // compare submitted password to profile's password from database
     const isMatch = await bcrypt.compare(submittedPassword, profile.password);
     if (!isMatch) {
       return res.status(401).json({ message: "password incorrect" });
     }
-
+    // if submitted password matches db password, execute delete function (delete from db)
     const deletedProfile = await Profile.findByIdAndDelete(profile._id);
     console.log("profile deleted 🚩\n", deletedProfile);
     return res

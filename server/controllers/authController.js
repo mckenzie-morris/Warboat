@@ -22,23 +22,26 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({ message: "password incorrect" });
     }
-
+    // instantiate a jwt access token after successfully logging-in
     const accessToken = jwt.sign(
+      // payload
       {
-        User: { username: profile.username },
+        Profile: { username: profile.username },
       },
+      // secret key
       process.env.ACCESS_TOKEN_SECRET,
+      // options (algorithm: defaults to HS256 if not specified)
       { expiresIn: "10s" },
     );
-
+    // instantiate a jwt refresh token after successfully logging-in
     const refreshToken = jwt.sign(
       {
-        User: { username: profile.username },
+        Profile: { username: profile.username },
       },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "1d" },
     );
-
+    // attach refresh token to HTTP-only cookie (.cookie() from Express)
     res.cookie("jwt", refreshToken, {
       // must be set to true so that client-side JavaScript cannot effect any change to the cookie
       httpOnly: true,
@@ -48,6 +51,7 @@ const login = async (req, res, next) => {
       sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
+    // send access token as part of response
     return res.json({ accessToken });
   } catch (error) {
     return next(error);
@@ -56,20 +60,55 @@ const login = async (req, res, next) => {
 
 // GET
 const refresh = (req, res, next) => {
-  try {
-    const cookies = req.cookies;
-
-    if (!cookies?.jwt) {
-      return res.status(401).json({ message: "password incorrect" });
-    }
-    const refreshToken = cookies.jwt
-  } 
-  catch (error) {
-
+  const cookies = req.cookies;
+  // ? = optional chaining
+  if (!cookies?.jwt) {
+    return res.status(401).json({ message: "unauthorized" });
   }
+  const refreshToken = cookies.jwt;
+  // decode and validate refresh token
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (error, decoded) => {
+      try {
+        // if the refresh token is invalid (expired, invalid signature, etc.)
+        if (error) {
+          return res.status(403).json({ message: "forbidden" });
+        }
+
+        const profile = await Profile.findOne({ username: decoded.Profile.username })
+          .lean()
+          .exec();
+
+        if (!profile) return res.status(401).json({ message: "Unauthorized" });
+        // instantiate a jwt access token after successfully validating refresh token
+        const accessToken = jwt.sign(
+          {
+            Profile: { username: profile.username },
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: "10s" },
+        );
+        // send access token as part of response
+        return res.json({ accessToken });
+      } catch (error) {
+        return next(error);
+      }
+    },
+  );
 };
 
 // POST
-const logout = (req, res, next) => {};
+const logout = (req, res, next) => {
+  const cookies = req.cookies;
+  // if refresh token has already been cleared from cookie, no further action needed
+  if (!cookies?.jwt) {
+    return res.sendStatus(204);
+  }
+  // clear refresh token on cookie (.clearCookie() from Express)
+  res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
+  res.json({ message: "Cookie cleared" });
+};
 
 export { login, refresh, logout };
