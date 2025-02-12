@@ -56,10 +56,10 @@ app.use(logger);
 // serve static files (webpack bundle) from 'dist' folder in root directory
 app.use(express.static("client/dist"));
 
-//
-app.use(profileRoutes);
 
 app.use(authRoutes)
+//
+app.use(profileRoutes);
 
 // handle browser refreshes (at endpoints other than root) and unknown roots
 app.use(wildcardRoute);

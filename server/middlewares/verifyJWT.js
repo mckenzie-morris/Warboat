@@ -7,7 +7,7 @@ const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.authorization;
   /* startsWith() will return true if req.headers.authorization returns a strings that 
     starts with 'Bearer' */
-  if (!authHeader?.startWith("Bearer")) {
+  if (!authHeader?.startsWith("Bearer")) {
     // return 401 if req.headers.authorization does not start with 'Bearer'
     return res.status(401).json({ message: "Unauthorized" });
   }
