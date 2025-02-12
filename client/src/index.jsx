@@ -7,6 +7,7 @@ import Game from "./pages/Game.jsx";
 import Login from "./pages/Login.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Options from "./pages/Options.jsx";
+import Profile from './pages/Profile.jsx'
 import NotFound from "./pages/NotFound.jsx";
 /* effect change to where mui/material styles are injected in HTML doc (at bottom by 
 default, therefore material library's styles take precedence) */
@@ -39,6 +40,7 @@ styling injected (Tailwind) after will take precedence */
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/options" element={<Options />} />
+          <Route path="/profile" element={<Profile />} />
           {/* render a 404 component (NotFound) for any path not explicitly defined */}
           <Route path="*" element={<NotFound />} />
         </Routes>

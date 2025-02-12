@@ -22,11 +22,15 @@ const Home = () => {
         </Button>
       </Link>
 
+      <Link to="/profile">
+        <Button className="rounded-md bg-green-600 px-4 py-1">Profile</Button>
+      </Link>
+
       <Link to="/login">
         <Button className="rounded-md bg-green-600 px-4 py-1">Login</Button>
       </Link>
     </div>
   );
-}
+};
 
 export default Home;
