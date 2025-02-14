@@ -8,6 +8,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
+import { submitCredentials } from "../auth/login";
 const { validateInput } = loginUtils();
 
 const Login = () => {
@@ -35,13 +36,16 @@ const Login = () => {
         <TextField
           className="my-5"
           variant="outlined"
+          // if non-valid username entered, show error outline when input loses focus
           error={validUsernameState === false}
           helperText={
+            // if non-valid username entered, show helper text
             validUsernameState === false
               ? "username must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
               : ""
           }
           id="input-username"
+          // validate username when input loses focus
           onBlur={() => {
             setValidUsernameState(
               validateInput(document.getElementById("input-username").value),
@@ -58,17 +62,22 @@ const Login = () => {
         <TextField
           className="my-5"
           variant="outlined"
+          // if non-valid password entered, show error outline when input loses focus
           error={validPasswordState === false}
+          // if non-valid password entered, show helper text
           helperText={
             validPasswordState === false
               ? "username must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
               : ""
           }
           id="input-password"
+          // validate password when input loses focus
           onBlur={() => {
             setValidPasswordState(
               validateInput(document.getElementById("input-password").value),
             );
+            /* if creating acct/profile, and user changes password after password confirmation 
+            entry and no longer match, pass false to confirm password state */
             if (
               createAcctState &&
               validConfirmState !== null &&
@@ -77,6 +86,8 @@ const Login = () => {
             ) {
               setValidConfirmState(false);
             } else if (
+            /* if creating acct/profile, and user changes password after password confirmation 
+            entry and match, pass true to confirm password state */
               createAcctState &&
               validConfirmState !== null &&
               document.getElementById("input-confirm-password").value ===
@@ -92,26 +103,33 @@ const Login = () => {
             </div>
           }
         ></TextField>
+        {/* if create acct checkbox NOT checked, show login button */}
         {!createAcctState && (
+          // if username and password are valid, enable button
           <Button
             disabled={!(validUsernameState && validPasswordState)}
             id="button-login"
+            onClick={submitCredentials}
             className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"
           >
             Submit
           </Button>
         )}
-
+        {/* if create acct checkbox NOT checked, show login button */}
         {createAcctState && (
           <div className="flex flex-col">
             <TextField
               className="my-5"
               variant="outlined"
+              /* if non-valid confirmation password entered, show error outline when 
+              input loses focus */
               error={validConfirmState === false}
+              // if non-valid confirmation password entered, show helper text
               helperText={
                 validConfirmState === false ? "must match password" : ""
               }
               id="input-confirm-password"
+              // validate confirmation password when input loses focus
               onBlur={() => {
                 if (
                   document.getElementById("input-confirm-password").value ===
@@ -127,6 +145,7 @@ const Login = () => {
                 </div>
               }
             ></TextField>
+            {/* if username, password, and confirmation password are valid, enable button */}
             <Button
               disabled={
                 !(validUsernameState && validPasswordState && validConfirmState)
