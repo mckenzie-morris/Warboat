@@ -8,6 +8,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
+const { validateInput } = loginUtils();
 
 const Login = () => {
   const {
@@ -17,23 +18,9 @@ const Login = () => {
     setValidUsernameState,
     validPasswordState,
     setValidPasswordState,
-    usernameInitState,
-    setUsernameState,
-    passwordInitState,
-    setPasswordState,
     validConfirmState,
     setValidConfirmState,
-    confirmInitState,
-    setConfirmState,
   } = loginHooks();
-  const { validateInput } = loginUtils();
-
-  React.useEffect(() => {
-    console.log("validUsernameState: ", validUsernameState);
-    console.log("validPasswordState: ", validPasswordState);
-    console.log("validConfirmState: ", validConfirmState);
-    console.log("confirmInitState: ", confirmInitState);
-  }, [validUsernameState, validPasswordState, validConfirmState, confirmInitState]);
 
   return (
     <div>
@@ -48,19 +35,17 @@ const Login = () => {
         <TextField
           className="my-5"
           variant="outlined"
-          // change 'error' prop to a conditional (if )
-          error={!usernameInitState}
+          error={validUsernameState === false}
           helperText={
-            !validUsernameState && !usernameInitState
+            validUsernameState === false
               ? "username must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
               : ""
           }
           id="input-username"
           onBlur={() => {
-            const validUsername =
-              document.getElementById("input-username").value;
-            setValidUsernameState(validateInput(validUsername));
-            setUsernameState(validateInput(validUsername));
+            setValidUsernameState(
+              validateInput(document.getElementById("input-username").value),
+            );
           }}
           label={
             <div className="flex">
@@ -73,27 +58,31 @@ const Login = () => {
         <TextField
           className="my-5"
           variant="outlined"
-          error={!passwordInitState}
+          error={validPasswordState === false}
           helperText={
-            !validPasswordState && !passwordInitState
-              ? "password must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
+            validPasswordState === false
+              ? "username must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
               : ""
           }
           id="input-password"
           onBlur={() => {
-            const validPassword =
-              document.getElementById("input-password").value;
-            setValidPasswordState(validateInput(validPassword));
-            setPasswordState(validateInput(validPassword));
-            const confirmPasswordValue = document?.getElementById(
-              "input-confirm-password",
-            )?.value;
-            if (createAcctState && (validPassword === confirmPasswordValue)) {
-              setValidConfirmState(true);
-            }
-            else if (createAcctState && (validPassword !== confirmPasswordValue)) {
+            setValidPasswordState(
+              validateInput(document.getElementById("input-password").value),
+            );
+            if (
+              createAcctState &&
+              validConfirmState !== null &&
+              document.getElementById("input-confirm-password").value !==
+                document.getElementById("input-password").value
+            ) {
               setValidConfirmState(false);
-              // setConfirmState(false)
+            } else if (
+              createAcctState &&
+              validConfirmState !== null &&
+              document.getElementById("input-confirm-password").value ===
+                document.getElementById("input-password").value
+            ) {
+              setValidConfirmState(true);
             }
           }}
           label={
@@ -118,31 +107,23 @@ const Login = () => {
             <TextField
               className="my-5"
               variant="outlined"
-              error={!confirmInitState}
+              error={validConfirmState === false}
               helperText={
-                !validConfirmState && !confirmInitState
-                  ? "must match password"
-                  : ""
+                validConfirmState === false ? "must match password" : ""
               }
               id="input-confirm-password"
               onBlur={() => {
-                const validPassword =
-                  document.getElementById("input-password").value;
-                const confirmPasswordValue = document.getElementById(
-                  "input-confirm-password",
-                ).value;
-                if (validPassword === confirmPasswordValue) {
+                if (
+                  document.getElementById("input-confirm-password").value ===
+                  document.getElementById("input-password").value
+                ) {
                   setValidConfirmState(true);
-                  setConfirmState(true);
-                } else {
-                  setValidConfirmState(false);
-                  setConfirmState(false);
-                }
+                } else setValidConfirmState(false);
               }}
               label={
                 <div className="flex">
                   <Lock />
-                  <p className="ms-1">password</p>
+                  <p className="ms-1">re-enter password</p>
                 </div>
               }
             ></TextField>
