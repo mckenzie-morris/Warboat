@@ -13,6 +13,9 @@ export default {
   theme: {
     fontSize,
     extend: {
+      fontFamily: {
+        machine: ['ITC Machine Bold', 'sans-serif'],
+      },
       colors: {
         primaryTheme: "rgba(var(--primary))",
         secondaryTheme: "rgba(var(--secondary))",

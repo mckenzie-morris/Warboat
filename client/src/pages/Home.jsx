@@ -1,9 +1,11 @@
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
+import Hero from "../components/Hero.jsx";
 
 const Home = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-evenly">
+      <Hero />
       <h1 className="text-9xl">Home</h1>
 
       <Link to="/game">

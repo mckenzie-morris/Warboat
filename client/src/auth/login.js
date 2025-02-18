@@ -7,7 +7,7 @@ const submitCredentials = async () => {
   try {
     const response = await axios.post(
       "/login",
-      // Request Config object
+      // request config object
       {
         submittedUsername: submittedUsername,
         submittedPassword: submittedPassword,
