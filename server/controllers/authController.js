@@ -103,6 +103,8 @@ const refresh = (req, res, next) => {
 const logout = (req, res, next) => {
   const cookies = req.cookies;
   // if refresh token has already been cleared from cookie, no further action needed
+  // console.log(req)
+  console.log(cookies)
   if (!cookies?.jwt) {
     return res.sendStatus(204);
   }

@@ -30,7 +30,7 @@ const __dirname = path.dirname(__filename);
 app.use(
   cors({
     // allow requests from webpack dev server at Port: 8080
-    origin: "http://localhost:8080/",
+    origin: "http://localhost:8080",
     /* with 'credentials: true' cookies and authorization headers are included in 
     cross-origin requests (pass the Access-Control-Allow-Credentials header) */
     credentials: true,

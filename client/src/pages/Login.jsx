@@ -6,6 +6,7 @@ import Lock from "@mui/icons-material/Lock";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Hero from "../components/Hero.jsx";
 import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
 import { submitCredentials } from "../auth/login";
@@ -25,7 +26,7 @@ const Login = () => {
 
   return (
     <div>
-      <h1 className="text-9xl">Login</h1>
+      <Hero displayText="login" />
       <Link to="/">
         <Button className="rounded-md bg-green-600 px-4 py-1">
           Return Home

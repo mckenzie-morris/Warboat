@@ -6,12 +6,16 @@ const submitCredentials = async () => {
   console.log("🚩🚩🚩 credentials: ", submittedUsername, submittedPassword);
   try {
     const response = await axios.post(
-      "/login",
+      // when running just the server, change to: "/login"
+      "http://localhost:3000/login",
       // request config object
       {
         submittedUsername: submittedUsername,
         submittedPassword: submittedPassword,
       },
+      /* `withCredentials` indicates whether or not cross-site Access-Control requests
+      should be made using credentials */
+      { withCredentials: true },
     );
     console.log("🚩 successful axios request: ", response);
   } catch (error) {
