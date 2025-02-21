@@ -14,7 +14,8 @@ const submitCredentials = async () => {
         submittedPassword: submittedPassword,
       },
       /* `withCredentials` indicates whether or not cross-site Access-Control requests
-      should be made using credentials */
+      should be made using credentials (such as cookies, authentication headers or 
+      TLS client certificates) */
       { withCredentials: true },
     );
     console.log("🚩 successful axios request: ", response);

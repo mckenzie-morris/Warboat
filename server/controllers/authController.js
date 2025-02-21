@@ -43,11 +43,13 @@ const login = async (req, res, next) => {
     );
     // attach refresh token to HTTP-only cookie (.cookie() from Express)
     res.cookie("jwt", refreshToken, {
-      // must be set to true so that client-side JavaScript cannot effect any change to the cookie
+      /* must be set to true so that client-side JavaScript cannot effect any 
+      change to the cookie through the Document.cookie property */
       httpOnly: true,
-      // must be 'false' in development (since localhost does not have a secure protocol)
+      // if sameSite is set to 'none', secure must be set to 'true'
       secure: true,
-      // must be 'none' in development (webpack runs on one origin and Express server on another)
+      /* must be 'none' in development (webpack runs on one origin and Express 
+      server on another) */
       sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
