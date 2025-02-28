@@ -23,12 +23,18 @@ const Fallback = ({ error }) => {
   );
 };
 
+/* Context lets the parent component make some information available to any component in 
+the tree below it—no matter how deep—without passing it explicitly through props. */
 const ProfileContext = React.createContext();
-
+/* When you nest content inside a JSX tag, the parent component will receive that content in a 
+prop called children */
 const ProfileProvider = ({ children }) => {
+  // can only call a Hook immediately inside a React component
   const [isLoggedIn, setLoggedIn] = React.useState(null);
   return (
     <ProfileContext.Provider value={{isLoggedIn, setLoggedIn}}>
+      {/* {children} is essential in any wrapper component that needs to dynamically render 
+      content inside it */}
       {children}
     </ProfileContext.Provider>
   );
