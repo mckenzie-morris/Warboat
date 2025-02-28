@@ -9,10 +9,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Hero from "../components/Hero.jsx";
 import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
-import { submitCredentials } from "../auth/login";
+import { useSubmitCredentials } from "../auth/login";
 const { validateInput } = loginUtils();
 
 const Login = () => {
+  const {submitCredentials} = useSubmitCredentials()
+  
   const {
     createAcctState,
     setCreateAcctState,

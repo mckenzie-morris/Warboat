@@ -7,7 +7,7 @@ import Game from "./pages/Game.jsx";
 import Login from "./pages/Login.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Options from "./pages/Options.jsx";
-import Profile from './pages/Profile.jsx'
+import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound.jsx";
 /* effect change to where mui/material styles are injected in HTML doc (at bottom by 
 default, therefore material library's styles take precedence) */
@@ -23,6 +23,17 @@ const Fallback = ({ error }) => {
   );
 };
 
+const ProfileContext = React.createContext();
+
+const ProfileProvider = ({ children }) => {
+  const [isLoggedIn, setLoggedIn] = React.useState(null);
+  return (
+    <ProfileContext.Provider value={{isLoggedIn, setLoggedIn}}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};
+
 import { themeControl } from "./utils/index.js";
 
 const root = createRoot(document.getElementById("root"));
@@ -34,18 +45,22 @@ styling injected (Tailwind) after will take precedence */
     {/* any rendering or runtime errors will trigger fallback component to render */}
     <ErrorBoundary FallbackComponent={Fallback}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/options" element={<Options />} />
-          <Route path="/profile" element={<Profile />} />
-          {/* render a 404 component (NotFound) for any path not explicitly defined */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <ProfileProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/options" element={<Options />} />
+            <Route path="/profile" element={<Profile />} />
+            {/* render a 404 component (NotFound) for any path not explicitly defined */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ProfileProvider>
       </BrowserRouter>
     </ErrorBoundary>
     ,
   </StyledEngineProvider>,
 );
+
+export { ProfileContext };
