@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const logout = async () => {
+const logout = async (setStateFunc) => {
   try {
     // when running just the server, change to: "/logout"
     const response = await axios.post(
@@ -13,6 +13,7 @@ const logout = async () => {
       { withCredentials: true },
     );
     console.log("🚩 successful axios request: ", response);
+    setStateFunc(null)
   } catch (error) {
     console.log(error);
   }

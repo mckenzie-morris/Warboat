@@ -1,10 +1,12 @@
 import ProfileMenu from "./ProfileMenu.jsx";
+import { ProfileContext } from "../index.jsx";
 
-const Hero = ({displayText}) => {
+const Hero = ({ displayText }) => {
+  const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   return (
-    <div className="w-full flex">
-      <h1 className="font-machine text-9xl mx-auto">{displayText}</h1>
-      <ProfileMenu />
+    <div className="flex w-full">
+      <h1 className="font-machine mx-auto text-9xl">{displayText}</h1>
+      {isLoggedIn && <ProfileMenu />}
     </div>
   );
 };

@@ -31,6 +31,11 @@ prop called children */
 const ProfileProvider = ({ children }) => {
   // can only call a Hook immediately inside a React component
   const [isLoggedIn, setLoggedIn] = React.useState(null);
+
+  React.useEffect(() => {
+    console.log("logged in: ", isLoggedIn);
+  }, [isLoggedIn]);
+
   return (
     <ProfileContext.Provider value={{isLoggedIn, setLoggedIn}}>
       {/* {children} is essential in any wrapper component that needs to dynamically render 

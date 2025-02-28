@@ -9,12 +9,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Hero from "../components/Hero.jsx";
 import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
-import { useSubmitCredentials } from "../auth/login";
 const { validateInput } = loginUtils();
 
+import { submitCredentials } from "../auth/login.js";
+import { ProfileContext } from "../index.jsx";
+
 const Login = () => {
-  const {submitCredentials} = useSubmitCredentials()
-  
+  const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
+
   const {
     createAcctState,
     setCreateAcctState,
@@ -70,7 +72,7 @@ const Login = () => {
           // if non-valid password entered, show helper text
           helperText={
             validPasswordState === false
-              ? "username must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
+              ? "password must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
               : ""
           }
           id="input-password"
@@ -89,7 +91,7 @@ const Login = () => {
             ) {
               setValidConfirmState(false);
             } else if (
-            /* if creating acct/profile, and user changes password after password confirmation 
+              /* if creating acct/profile, and user changes password after password confirmation 
             entry and match, pass true to confirm password state */
               createAcctState &&
               validConfirmState !== null &&
@@ -112,7 +114,9 @@ const Login = () => {
           <Button
             disabled={!(validUsernameState && validPasswordState)}
             id="button-login"
-            onClick={submitCredentials}
+            onClick={() => {
+              submitCredentials(setLoggedIn);
+            }}
             className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"
           >
             Submit

@@ -4,26 +4,25 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import {logout} from "../auth/logout.js";
+import { logout } from "../auth/logout.js";
+import { ProfileContext } from "../index.jsx";
 
 export default function BasicMenu() {
+  const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (event) => {
-    console.log(event.currentTarget.id);
-
     if (event.currentTarget.id === "menuItem-logout") {
-      logout()
+      logout(setLoggedIn);
     }
-
     setAnchorEl(null);
   };
 
   return (
-    <div className='self-center absolute right-5'>
+    <div className="absolute right-5 self-center">
       <Button
         className="rounded-md bg-green-600 px-4 py-1"
         id="basic-button"
@@ -32,7 +31,7 @@ export default function BasicMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        Dashboard
+        {isLoggedIn}
       </Button>
       <Menu
         id="basic-menu"

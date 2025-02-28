@@ -54,7 +54,7 @@ const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     // send access token as part of response
-    return res.status(200).json({ accessToken });
+    return res.status(200).json([{accessToken}, profile.username]);
   } catch (error) {
     return next(error);
   }
