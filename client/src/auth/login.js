@@ -18,7 +18,7 @@ const submitCredentials = async (setStateFunc) => {
         TLS client certificates) */
       { withCredentials: true },
     );
-    console.log("🚩 successful axios request: ", response.status);
+    console.log("🚩 successful axios request: ", response.data[0]);
     setStateFunc(response.data[1]);
   } catch (error) {
     console.log(error.response.data);
