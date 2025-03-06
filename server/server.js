@@ -10,8 +10,9 @@ import logger from "./middlewares/erroneous-request-logger.js";
 import errorHandler from "./middlewares/error-handler.js";
 import dotenv from "dotenv";
 dotenv.config();
+import protectedRoutes from "./routes/protectedRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
-import authRoutes from './routes/authRoutes.js'
+import authRoutes from "./routes/authRoutes.js";
 import wildcardRoute from "./routes/wildcardRoute.js";
 const dbURI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
@@ -56,16 +57,18 @@ app.use(logger);
 // serve static files (webpack bundle) from 'dist' folder in root directory
 app.use(express.static("client/dist"));
 
-
-app.use(authRoutes)
+app.use(authRoutes);
 //
 app.use(profileRoutes);
+
+app.use(protectedRoutes);
 
 // handle browser refreshes (at endpoints other than root) and unknown roots
 app.use(wildcardRoute);
 
 // default error handler
 app.use(errorHandler);
+
 
 const startServer = (async () => {
   try {

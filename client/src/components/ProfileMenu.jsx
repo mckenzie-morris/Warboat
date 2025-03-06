@@ -31,7 +31,7 @@ export default function BasicMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        {isLoggedIn}
+        {isLoggedIn[1]}
       </Button>
       <Menu
         id="basic-menu"

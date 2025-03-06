@@ -33,6 +33,7 @@ const ProfileProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = React.useState(null);
 
   React.useEffect(() => {
+    // isLoggedIn = Array --> [{accessToken: <...>}, <username>]
     console.log("logged in: ", isLoggedIn);
   }, [isLoggedIn]);
 
