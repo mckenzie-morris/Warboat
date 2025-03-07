@@ -1,20 +1,5 @@
 import axios from "axios";
-
-const refreshToken = async () => {
-  try {
-    const response = await axios.get(
-      // when running just the server, change to: "/refresh"
-      "http://localhost:3000/refresh",
-      /* `withCredentials` indicates whether or not cross-site Access-Control requests
-      should be made using credentials (such as cookies, authentication headers or 
-      TLS client certificates) */
-      { withCredentials: true },
-    );
-    console.log("🚩 successful axios request: ", response.data);
-  } catch (error) {
-    console.log(error.response.data);
-  }
-};
+import { refreshToken } from './refreshToken';
 
 const instance = axios.create({
   baseURL: "http://localhost:3000", // Set a base URL for all requests

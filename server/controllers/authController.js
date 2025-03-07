@@ -93,7 +93,7 @@ const refresh = (req, res, next) => {
           { expiresIn: "1m" },
         );
         // send access token as part of response
-        return res.json({ accessToken });
+        return res.status(200).json([{accessToken}, profile.username]);
       } catch (error) {
         return next(error);
       }

@@ -9,6 +9,7 @@ import Leaderboard from "./pages/Leaderboard.jsx";
 import Options from "./pages/Options.jsx";
 import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import { ProfileProvider, ProfileContext } from "./context/ProfileContext.js";
 /* effect change to where mui/material styles are injected in HTML doc (at bottom by 
 default, therefore material library's styles take precedence) */
 import { StyledEngineProvider } from "@mui/material/styles";
@@ -23,36 +24,13 @@ const Fallback = ({ error }) => {
   );
 };
 
-/* Context lets the parent component make some information available to any component in 
-the tree below it—no matter how deep—without passing it explicitly through props. */
-const ProfileContext = React.createContext();
-/* When you nest content inside a JSX tag, the parent component will receive that content in a 
-prop called children */
-const ProfileProvider = ({ children }) => {
-  // can only call a Hook immediately inside a React component
-  const [isLoggedIn, setLoggedIn] = React.useState(null);
-
-  React.useEffect(() => {
-    // isLoggedIn = Array --> [{accessToken: <...>}, <username>]
-    console.log("logged in: ", isLoggedIn);
-  }, [isLoggedIn]);
-
-  return (
-    <ProfileContext.Provider value={{isLoggedIn, setLoggedIn}}>
-      {/* {children} is essential in any wrapper component that needs to dynamically render 
-      content inside it */}
-      {children}
-    </ProfileContext.Provider>
-  );
-};
-
 import { themeControl } from "./utils/index.js";
 
 const root = createRoot(document.getElementById("root"));
 
 root.render(
   /* 'injectFirst' prop injects Material library's styles at top of <head>, so that any other 
-styling injected (Tailwind) after will take precedence */
+  styling injected (Tailwind) after will take precedence */
   <StyledEngineProvider injectFirst>
     {/* any rendering or runtime errors will trigger fallback component to render */}
     <ErrorBoundary FallbackComponent={Fallback}>

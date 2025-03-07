@@ -21,7 +21,7 @@ const submitCredentials = async (setStateFunc) => {
     console.log("🚩 successful axios request: ", response);
     setStateFunc(response.data);
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error.response?.data);
   }
 };
 
