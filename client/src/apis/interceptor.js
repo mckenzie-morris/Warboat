@@ -13,8 +13,11 @@ instance.interceptors.response.use(
   async (error) => {
     if (error.response.status === 403) {
       try {
-        const newAccessToken = await refreshToken();
-        // updates the default headers globally for all Axios requests (not just instance)
+
+        // console.log(error.config.setLoggedIn)
+
+        const newAccessToken = await refreshToken(error.config.setLoggedIn);
+        // updates the default headers globally for all (instance-based) requests
         instance.defaults.headers.common["Authorization"] =
           `Bearer ${newAccessToken}`;
 

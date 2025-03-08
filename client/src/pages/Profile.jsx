@@ -2,9 +2,8 @@ import Button from "@mui/material/Button";
 import { Link, Navigate } from "react-router";
 import Hero from "../components/Hero.jsx";
 import { ProfileContext } from "../index.jsx";
-import React from "react";
-import axios from "axios";
 import {instance} from "../apis/interceptor.js"
+import React from "react";
 
 const Profile = () => {
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
@@ -12,22 +11,34 @@ const Profile = () => {
     return <Navigate to={'/'} />
   }
 
-  const grabProtectedStuff = (async () => {
-    try {
-      const response = await instance.get(
-        // when running just the server, change to: "/profile"
-        "/profile",
-        { headers: {"Authorization" : `Bearer ${isLoggedIn[0].accessToken}`},
-        /* `withCredentials` indicates whether or not cross-site Access-Control requests
-          should be made using credentials (such as cookies, authentication headers or 
-          TLS client certificates) */
-         withCredentials: true },
-      );
-      console.log("🚩 successful axios request: ", response.data);
-    } catch (error) {
-      console.log("💩💩💩", error.response?.data);
+  React.useEffect(() => {
+    const grabProtectedStuff = async () => {
+      try {
+        const response = await instance.get(
+          // when running just the server, change to: "/profile"
+          "/profile",
+          { headers: {"Authorization" : `Bearer ${isLoggedIn[0].accessToken}`},
+  
+  
+          setLoggedIn: setLoggedIn,
+  
+  
+          /* `withCredentials` indicates whether or not cross-site Access-Control requests
+            should be made using credentials (such as cookies, authentication headers or 
+            TLS client certificates) */
+           withCredentials: true },
+        );
+        console.log("🚩 successful axios request: ", response.data);
+      } catch (error) {
+        console.log("💩💩💩", error.response?.data);
+      }
     }
-  })()
+
+    grabProtectedStuff()
+
+  }, [])
+
+  
 
   return (
     <div>
