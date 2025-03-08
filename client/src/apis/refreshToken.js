@@ -11,7 +11,11 @@ const refreshToken = async (setStateFunc) => {
         { withCredentials: true },
       );
       console.log("🚩 successful axios request: ", response.data);
-      setStateFunc(response.data);
+      if (setStateFunc) {
+
+        setStateFunc(response.data);
+      }
+      return response.data[0].accessToken
     } catch (error) {
       console.log(error.response?.data);
     }

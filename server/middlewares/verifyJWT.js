@@ -4,7 +4,7 @@ const verifyJWT = (req, res, next) => {
   /* from the Request interface of the fetch API (allows web browser to make HTTP requests 
     to web servers) */
   // no set standard for 'authorization' to start with 'a' or 'A'
-  const authHeader = req.headers.authorization || req.headers.authorization;
+  const authHeader = req.headers.Authorization || req.headers.authorization;
   /* startsWith() will return true if req.headers.authorization returns a strings that 
     starts with 'Bearer' */
   if (!authHeader?.startsWith("Bearer")) {

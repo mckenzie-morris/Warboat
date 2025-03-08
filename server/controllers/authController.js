@@ -31,7 +31,7 @@ const login = async (req, res, next) => {
       // secret key
       process.env.ACCESS_TOKEN_SECRET,
       // options (algorithm: defaults to HS256 if not specified)
-      { expiresIn: "1m" },
+      { expiresIn: "10s" },
     );
     // instantiate a jwt refresh token after successfully logging-in
     const refreshToken = jwt.sign(
@@ -90,7 +90,7 @@ const refresh = (req, res, next) => {
             Profile: { username: profile.username },
           },
           process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "1m" },
+          { expiresIn: "10s" },
         );
         // send access token as part of response
         return res.status(200).json([{accessToken}, profile.username]);

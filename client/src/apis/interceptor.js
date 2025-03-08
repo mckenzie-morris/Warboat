@@ -1,11 +1,8 @@
 import axios from "axios";
-import { refreshToken } from './refreshToken';
+import { refreshToken } from "./refreshToken.js";
 
 const instance = axios.create({
   baseURL: "http://localhost:3000", // Set a base URL for all requests
-  //   headers: {
-  //     "Content-Type": "application/json", // Set default headers for all requests
-  //   },
 });
 
 instance.interceptors.response.use(
@@ -14,15 +11,16 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response.status === 401) {
+    if (error.response.status === 403) {
       try {
         const newAccessToken = await refreshToken();
         // updates the default headers globally for all Axios requests (not just instance)
-        axios.defaults.headers.common["Authorization"] =
+        instance.defaults.headers.common["Authorization"] =
           `Bearer ${newAccessToken}`;
 
         const originalRequest = error.config;
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return instance(originalRequest)
       } catch (refreshError) {
         return Promise.reject(refreshError);
       }
@@ -30,3 +28,5 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export {instance}

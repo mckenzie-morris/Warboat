@@ -4,6 +4,7 @@ import Hero from "../components/Hero.jsx";
 import { ProfileContext } from "../index.jsx";
 import React from "react";
 import axios from "axios";
+import {instance} from "../apis/interceptor.js"
 
 const Profile = () => {
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
@@ -13,9 +14,9 @@ const Profile = () => {
 
   const grabProtectedStuff = (async () => {
     try {
-      const response = await axios.get(
+      const response = await instance.get(
         // when running just the server, change to: "/profile"
-        "http://localhost:3000/profile",
+        "/profile",
         { headers: {"Authorization" : `Bearer ${isLoggedIn[0].accessToken}`},
         /* `withCredentials` indicates whether or not cross-site Access-Control requests
           should be made using credentials (such as cookies, authentication headers or 
