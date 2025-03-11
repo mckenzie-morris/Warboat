@@ -10,12 +10,19 @@ import Hero from "../components/Hero.jsx";
 import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
 const { validateInput } = loginUtils();
-
+import { useNavigate } from "react-router";
 import { submitCredentials } from "../auth/login.js";
 import { ProfileContext } from "../index.jsx";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      return navigate("/");
+    }
+  }, [isLoggedIn]);
 
   const {
     createAcctState,

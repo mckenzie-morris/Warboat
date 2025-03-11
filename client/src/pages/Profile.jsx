@@ -2,8 +2,7 @@ import Button from "@mui/material/Button";
 import { Link, Navigate } from "react-router";
 import Hero from "../components/Hero.jsx";
 import { ProfileContext } from "../index.jsx";
-import { instance } from "../apis/interceptor.js";
-import React from "react";
+import { instanceWithInterceptor } from "../apis/interceptor.js";
 
 const Profile = () => {
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
@@ -14,7 +13,7 @@ const Profile = () => {
   React.useEffect(() => {
     const grabProtectedStuff = async () => {
       try {
-        const response = await instance.get(
+        const response = await instanceWithInterceptor.get(
           // when running just the server, change to: "/profile"
           "/profile",
           {

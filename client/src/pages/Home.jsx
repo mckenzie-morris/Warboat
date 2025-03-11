@@ -1,8 +1,11 @@
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
 import Hero from "../components/Hero.jsx";
+import { ProfileContext } from "../index.jsx";
+import { logout } from "../auth/logout.js";
 
 const Home = () => {
+  const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   return (
     <div>
       <Hero displayText="warboat" />
@@ -26,10 +29,13 @@ const Home = () => {
         <Link to="/profile">
           <Button className="rounded-md bg-green-600 px-4 py-1">Profile</Button>
         </Link>
-
-        <Link to="/login">
-          <Button className="rounded-md bg-green-600 px-4 py-1">Login</Button>
-        </Link>
+        {isLoggedIn === null ? (
+          <Link to="/login">
+            <Button className="rounded-md bg-green-600 px-4 py-1">Login</Button>
+          </Link>
+        ) : (
+            <Button onClick={() => {logout(setLoggedIn)}} className="rounded-md bg-green-600 px-4 py-1">Log Out</Button>
+        )}
       </div>
     </div>
   );

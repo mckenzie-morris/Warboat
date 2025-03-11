@@ -6,8 +6,11 @@ import Logout from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { logout } from "../auth/logout.js";
 import { ProfileContext } from "../index.jsx";
+import { useNavigate } from "react-router";
 
 export default function BasicMenu() {
+  // useNavigate() facilitates navigating the user without the user interacting
+  const navigate = useNavigate()
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -17,6 +20,9 @@ export default function BasicMenu() {
   const handleClose = (event) => {
     if (event.currentTarget.id === "menuItem-logout") {
       logout(setLoggedIn);
+    }
+    if (event.currentTarget.id === "menuItem-profile") {
+      return navigate("/profile")
     }
     setAnchorEl(null);
   };
@@ -42,7 +48,7 @@ export default function BasicMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem divider={true} id="theID" onClick={handleClose}>
+        <MenuItem divider={true} id="menuItem-profile" onClick={handleClose}>
           <ListItemIcon>
             <AccountBoxIcon />
           </ListItemIcon>
