@@ -1,5 +1,10 @@
 import Button from "@mui/material/Button";
+
+
 import { Link, Navigate } from "react-router";
+// import { useNavigate } from "react-router";
+
+
 import Hero from "../components/Hero.jsx";
 import { ProfileContext } from "../index.jsx";
 import { instanceWithInterceptor } from "../apis/interceptor.js";
@@ -7,11 +12,17 @@ import { instanceWithInterceptor } from "../apis/interceptor.js";
 const Profile = () => {
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   const [serverRes, setServerRes] = React.useState(null)
-  if (!isLoggedIn) {
-    return <Navigate to={"/login"} />;
-  }
+  // const navigate = useNavigate();
+  // if (!isLoggedIn) {
+  //   return navigate("/login");
+  // }
 
+  // if (!isLoggedIn) {
+  //   return <Navigate to={"/login"} />;
+  // }
+  
   React.useEffect(() => {
+
     const grabProtectedStuff = async () => {
       try {
         const response = await instanceWithInterceptor.get(
@@ -41,9 +52,9 @@ const Profile = () => {
   return (
     <div>
       <Hero displayText="profile" />
-      {!serverRes ? 'waiting...' : Object.entries(serverRes).map((entry, idx) => {
-        return <p key={idx}>{entry}</p>
-      }) }
+      {!serverRes ? 'waiting...' : Object.entries(serverRes).map(([key, val], idx) => {
+        return <p key={idx}>{`${key}: ${val}`}</p>
+      })}
       <Link to="/">
         <Button className="rounded-md bg-green-600 px-4 py-1">
           Return Home

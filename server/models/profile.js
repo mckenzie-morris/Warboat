@@ -12,6 +12,14 @@ const profileSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  highestScore: {
+    type: String,
+    default: 'N/A',
+  },
+  mostRecentScore: {
+    type: String,
+    default: 'N/A',
+  },
   acctCreated: {
     type: String,
     // Mongoose applies default if the value of the path is strictly undefined

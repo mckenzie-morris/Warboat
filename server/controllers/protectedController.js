@@ -1,7 +1,6 @@
 import Profile from "../models/profile.js";
 
 const profile = async (req, res, next) => {
-  console.log("😁😁😁", req.username);
   const profile = await Profile.findOne({ username: req.username })
     .lean()
     .exec();

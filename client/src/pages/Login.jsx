@@ -12,6 +12,7 @@ import loginUtils from "../utils/login";
 const { validateInput } = loginUtils();
 import { useNavigate } from "react-router";
 import { submitCredentials } from "../auth/login.js";
+import { submitCreate } from "../auth/create.js"; 
 import { ProfileContext } from "../index.jsx";
 
 const Login = () => {
@@ -165,6 +166,9 @@ const Login = () => {
               disabled={
                 !(validUsernameState && validPasswordState && validConfirmState)
               }
+              onClick={() => {
+                submitCreate(setLoggedIn)
+              }}
               id="button-create-acct"
               className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"
             >

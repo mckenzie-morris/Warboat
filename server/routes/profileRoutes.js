@@ -6,10 +6,6 @@ import {
   deleteProfile,
 } from "../controllers/profileController.js";
 
-import verifyJWT from "../middlewares/verifyJWT.js";
-
-// router.use(verifyJWT)
-
 router
   .route("/profiles")
   .get(getAllProfiles)

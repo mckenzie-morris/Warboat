@@ -1,5 +1,6 @@
 import Profile from "../models/profile.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const getAllProfiles = async (req, res, next) => {
   try {
@@ -20,9 +21,12 @@ const getAllProfiles = async (req, res, next) => {
 
 const createNewProfile = async (req, res, next) => {
   try {
-    const { submittedUsername, submittedPassword } = req.body;
-    if (!submittedUsername || !submittedPassword) {
-      return res.status(400).json({ message: "both fields required" });
+    const { submittedUsername, submittedPassword, confirmedPassword } =
+      req.body;
+    if (!submittedUsername || !submittedPassword || !confirmedPassword) {
+      return res.status(400).json({ message: "all fields required" });
+    } else if (submittedPassword !== confirmedPassword) {
+      return res.status(400).json({ message: "passwords must match" });
     }
     const duplicate = await Profile.findOne({ username: submittedUsername })
       .lean()
@@ -40,8 +44,41 @@ const createNewProfile = async (req, res, next) => {
     const profileDoc = { username: submittedUsername, password: hashedPwd };
     const profile = await Profile.create(profileDoc);
     // .create() returns a promise that resolves to the newly created document (profile)
+    console.log('profile created/ return document: ', profile)
     if (profile) {
-      return res.status(201).json({ message: "profile successfully created" });
+      // instantiate a jwt access token after successfully logging-in
+      const accessToken = jwt.sign(
+        // payload
+        {
+          Profile: { username: profile.username },
+        },
+        // secret key
+        process.env.ACCESS_TOKEN_SECRET,
+        // options (algorithm: defaults to HS256 if not specified)
+        { expiresIn: "10s" },
+      );
+      // instantiate a jwt refresh token after successfully logging-in
+      const refreshToken = jwt.sign(
+        {
+          Profile: { username: profile.username },
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: "1d" },
+      );
+      // attach refresh token to HTTP-only cookie (.cookie() from Express)
+      res.cookie("jwt", refreshToken, {
+        /* must be set to true so that client-side JavaScript cannot effect any 
+      change to the cookie through the Document.cookie property */
+        httpOnly: true,
+        // if sameSite is set to 'none', secure must be set to 'true'
+        secure: true,
+        /* must be 'none' in development (webpack runs on one origin and Express 
+      server on another) */
+        sameSite: "None",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
+      return res.status(201).json([{ accessToken }, profile.username]);
     }
     return res.status(400).json({ message: "invalid user data received" });
   } catch (error) {
@@ -51,8 +88,7 @@ const createNewProfile = async (req, res, next) => {
 
 const deleteProfile = async (req, res, next) => {
   try {
-    const { submittedUsername, submittedPassword } =
-      req.body;
+    const { submittedUsername, submittedPassword } = req.body;
 
     if (!submittedUsername || !submittedPassword) {
       return res.status(400).json({ message: "both fields required" });
