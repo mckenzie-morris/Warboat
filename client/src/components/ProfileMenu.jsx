@@ -18,9 +18,11 @@ export default function BasicMenu() {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (event) => {
+    // handle log-out if clicked
     if (event.currentTarget.id === "menuItem-logout") {
       logout(setLoggedIn);
     }
+    // navigate to profile page if clicked
     if (event.currentTarget.id === "menuItem-profile") {
       return navigate("/profile")
     }

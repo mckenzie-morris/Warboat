@@ -3,7 +3,6 @@ import axios from "axios";
 const submitCredentials = async (setStateFunc) => {
   const submittedUsername = document.getElementById("input-username").value;
   const submittedPassword = document.getElementById("input-password").value;
-  console.log("🚩🚩🚩 credentials: ", submittedUsername, submittedPassword);
   try {
     const response = await axios.post(
       // when running just the server, change to: "/login"
@@ -18,7 +17,7 @@ const submitCredentials = async (setStateFunc) => {
         TLS client certificates) */
       { withCredentials: true },
     );
-    console.log("🚩 successful axios request: ", response);
+    console.log("🚩 successful login: ", response.data);
     setStateFunc(response.data);
   } catch (error) {
     console.log(error.response?.data);

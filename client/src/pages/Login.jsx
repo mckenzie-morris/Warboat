@@ -19,6 +19,7 @@ const Login = () => {
 
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   React.useEffect(() => {
+    // if a user is logged-in, re-direct to home page
     if (isLoggedIn) {
       return navigate("/");
     }

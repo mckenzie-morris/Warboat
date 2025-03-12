@@ -6,6 +6,7 @@ import { instanceWithInterceptor } from "../apis/interceptor.js";
 
 const Profile = () => {
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
+  const [serverRes, setServerRes] = React.useState(null)
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
   }
@@ -29,18 +30,20 @@ const Profile = () => {
           },
         );
         console.log("🚩 successful axios request: ", response.data);
+        setServerRes(response.data)
       } catch (error) {
         console.log("💩💩💩", error.response?.data);
       }
     };
-
     grabProtectedStuff();
   }, []);
 
   return (
     <div>
       <Hero displayText="profile" />
-      <p>{isLoggedIn[0].accessToken}</p>
+      {!serverRes ? 'waiting...' : Object.entries(serverRes).map((entry, idx) => {
+        return <p key={idx}>{entry}</p>
+      }) }
       <Link to="/">
         <Button className="rounded-md bg-green-600 px-4 py-1">
           Return Home
