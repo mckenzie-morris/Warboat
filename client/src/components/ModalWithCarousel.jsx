@@ -2,7 +2,7 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Carousel from "./Carousel.jsx";
 
-const BasicModal = () => {
+const ModalWithCarousel = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -35,4 +35,4 @@ const BasicModal = () => {
   );
 };
 
-export default BasicModal;
+export default ModalWithCarousel;

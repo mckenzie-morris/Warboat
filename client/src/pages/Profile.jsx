@@ -5,13 +5,12 @@ import Loading from "./Loading.jsx";
 import Hero from "../components/Hero.jsx";
 import { ProfileContext } from "../index.jsx";
 import { instanceWithInterceptor } from "../apis/interceptor.js";
-import React from "react";
 
 const Profile = () => {
   const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   const [serverResponse, setServerResponse] = React.useState(null);
   const navigate = useNavigate();
-  // initialize a ref to null
+  // initialize a React ref to null
   const loggedInRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -48,7 +47,7 @@ const Profile = () => {
         console.log("🚩 successful axios request: ", response.data);
         setServerResponse(response.data);
       } catch (error) {
-        console.log("💩💩💩", error.response?.data);
+        console.log(error.response?.data);
       }
     };
 
@@ -73,6 +72,10 @@ const Profile = () => {
               Return Home
             </Button>
           </Link>
+
+          <Button className="rounded-md bg-green-600 px-4 py-1">
+            Change username
+          </Button>
         </div>
       )}
     </div>
