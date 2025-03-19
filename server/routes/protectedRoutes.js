@@ -7,6 +7,6 @@ import verifyJWT from "../middlewares/verifyJWT.js";
 router.use(verifyJWT)
 
 router.route("/profile").get(profile);
-router.route("/profile/username").get(changeUsername);
+router.route("/profile/username").patch(changeUsername);
 
 export default router

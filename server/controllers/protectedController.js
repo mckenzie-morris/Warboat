@@ -22,8 +22,7 @@ const changeUsername = async (req, res, next) => {
     const { newUsername, confirmedNewUsername, submittedPassword } = req.body;
     if (!newUsername || !confirmedNewUsername || !submittedPassword) {
       return res.status(400).json({ message: "all fields required" });
-    }
-    else if (newUsername !== confirmedNewUsername) {
+    } else if (newUsername !== confirmedNewUsername) {
       return res.status(400).json({ message: "usernames must match" });
     }
 
@@ -35,13 +34,21 @@ const changeUsername = async (req, res, next) => {
       return res.status(409).json({ message: "username already exists" });
     }
 
+    const profile = await Profile.findOneAndUpdate(
+      // filter
+      { username: req.username },
+      // update
+      { username: newUsername },
+      // options
+      {
+        new: true,
+        lean: true,
+        fields: "username highestScore mostRecentScore acctCreated" 
+      }
+    );
 
-    const profile = await Profile.findOne({ username: req.username })
-      .lean()
-      .exec();
-    return res.status(200).json({ message: "ayyyyyyyyyy 🍻🍻🍻" });
-  } 
-  catch (error) {
+    return res.status(200).json({ profile });
+  } catch (error) {
     return next(error);
   }
 };
