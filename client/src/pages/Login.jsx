@@ -7,7 +7,6 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Hero from "../components/Hero.jsx";
-import loginHooks from "../hooks/login";
 import loginUtils from "../utils/login";
 const { validateInput } = loginUtils();
 import { useNavigate } from "react-router";
@@ -26,16 +25,10 @@ const Login = () => {
     }
   }, [isLoggedIn]);
 
-  const {
-    createAcctState,
-    setCreateAcctState,
-    validUsernameState,
-    setValidUsernameState,
-    validPasswordState,
-    setValidPasswordState,
-    validConfirmState,
-    setValidConfirmState,
-  } = loginHooks();
+  const [createAcctState, setCreateAcctState] = React.useState(false);
+  const [validUsernameState, setValidUsernameState] = React.useState(null);
+  const [validPasswordState, setValidPasswordState] = React.useState(null);
+  const [validConfirmState, setValidConfirmState] = React.useState(null);
 
   return (
     <div>
