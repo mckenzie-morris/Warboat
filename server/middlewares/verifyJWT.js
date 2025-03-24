@@ -9,14 +9,14 @@ const verifyJWT = (req, res, next) => {
     starts with 'Bearer' */
   if (!authHeader?.startsWith("Bearer")) {
     // return 401 if req.headers.authorization does not start with 'Bearer'
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "💩🍪Unauthorized" });
   }
   // split req.headers.authorization into a string and return second word (the token)
   const token = authHeader.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
     // if the access token is invalid (expired, invalid signature, etc.)
     if (error) {
-      return res.status(403).json({ message: "forbidden" });
+      return res.status(403).json({ message: "💩🍪forbidden" });
     }
     req.username = decoded.Profile.username;
     next();
