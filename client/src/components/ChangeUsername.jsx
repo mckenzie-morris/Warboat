@@ -13,9 +13,13 @@ const ChangeUsername = () => {
   const [validUsernameState, setValidUsernameState] = React.useState(null);
   const [validPasswordState, setValidPasswordState] = React.useState(null);
   const [validConfirmState, setValidConfirmState] = React.useState(null);
+  const [alternativeContentState, setAlternativeContentState] = React.useState(null);
+  const [closeModalState, setCloseModalState] = React.useState(false);
 
   return (
     <Modal
+      alternativeContent={alternativeContentState}
+      closeCondition={closeModalState}
       displayTextOpenButton="Change Username!!!"
       displayTextCloseButton="clooooose"
       modalContent={
@@ -124,8 +128,17 @@ const ChangeUsername = () => {
               disabled={
                 !(validUsernameState && validConfirmState && validPasswordState)
               }
-              onClick={() => {
-                changeUsername(isLoggedIn[0].accessToken, setLoggedIn);
+              onClick={async () => {
+                const serverRes = await changeUsername(
+                  isLoggedIn[0].accessToken,
+                  setLoggedIn,
+                );
+                setAlternativeContentState(serverRes);
+                setCloseModalState(false)
+                setTimeout(() => {
+                  setAlternativeContentState(null)
+                  setCloseModalState(true);
+                }, 2500);
               }}
               id="button-change-username"
               className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"

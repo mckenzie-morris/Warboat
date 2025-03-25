@@ -2,7 +2,6 @@
 import { instanceWithInterceptor } from "../apis/interceptor.js";
 
 const changeUsername = async (accessT, setStateFunc) => {
-    console.log("💩🍪💩🍪", accessT)
     const newUsername = document.getElementById("input-NewUsername").value
     const confirmedNewUsername = document.getElementById("input-confirm-NewUsername").value
     const submittedPassword = document.getElementById("input-confirm-NewUsername").value
@@ -31,10 +30,12 @@ const changeUsername = async (accessT, setStateFunc) => {
             TLS client certificates) */
            withCredentials: true },
         );
-        console.log("🚩 successful login: ", response.data);
-        // setStateFunc(response.data);
+        console.log("🚩 successful name change: ", response.data);
+        setStateFunc(response.data);
+        return "username change successful"
       } catch (error) {
         console.log(error.response?.data);
+        return `error occurred: ${JSON.stringify(error.response?.data?.message)}`
       }
 }
 

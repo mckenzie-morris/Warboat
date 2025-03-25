@@ -1,4 +1,5 @@
 import Profile from "../models/profile.js";
+import jwt from "jsonwebtoken";
 
 const profile = async (req, res, next) => {
   try {
@@ -43,11 +44,45 @@ const changeUsername = async (req, res, next) => {
       {
         new: true,
         lean: true,
-        fields: "username highestScore mostRecentScore acctCreated" 
-      }
+        fields: "username highestScore mostRecentScore acctCreated",
+      },
     );
+    // clear refresh token with outdated username
+    res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
 
-    return res.status(200).json({ profile });
+    // instantiate a new jwt access token
+    const accessToken = jwt.sign(
+      // payload
+      {
+        Profile: { username: profile.username },
+      },
+      // secret key
+      process.env.ACCESS_TOKEN_SECRET,
+
+      { expiresIn: "10s" },
+    );
+    // instantiate a new jwt refresh token 
+    const refreshToken = jwt.sign(
+      {
+        Profile: { username: profile.username },
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "1d" },
+    );
+    // attach refresh token to HTTP-only cookie (.cookie() from Express)
+    res.cookie("jwt", refreshToken, {
+      /* must be set to true so that client-side JavaScript cannot effect any 
+          change to the cookie through the Document.cookie property */
+      httpOnly: true,
+      // if sameSite is set to 'none', secure must be set to 'true'
+      secure: true,
+      /* must be 'none' in development (webpack runs on one origin and Express 
+          server on another) */
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return res.status(200).json([{ accessToken }, profile.username]);
   } catch (error) {
     return next(error);
   }
