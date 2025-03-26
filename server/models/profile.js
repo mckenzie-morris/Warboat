@@ -12,6 +12,8 @@ const profileSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
+    /* with 'select: false' queries will exclude the password from the return 
+    document by default */
     select: false,
   },
   highestScore: {
