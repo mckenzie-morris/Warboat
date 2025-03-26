@@ -65,7 +65,7 @@ const refresh = (req, res, next) => {
   const cookies = req.cookies;
   // ? = optional chaining
   if (!cookies?.jwt) {
-    return res.status(401).json({ message: "🤘🤘🤘unauthorized" });
+    return res.status(401).json({ message: "unauthorized" });
   }
   const refreshToken = cookies.jwt;
   // decode and validate refresh token
@@ -83,7 +83,7 @@ const refresh = (req, res, next) => {
           .lean()
           .exec();
 
-        if (!profile) return res.status(401).json({ message: "👌👌👌Unauthorized" });
+        if (!profile) return res.status(401).json({ message: "Unauthorized" });
         // instantiate a jwt access token after successfully validating refresh token
         const accessToken = jwt.sign(
           {
