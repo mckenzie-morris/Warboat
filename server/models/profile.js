@@ -7,18 +7,20 @@ const profileSchema = mongoose.Schema({
     /* attach a required validator to this path, which ensures this path cannot 
     be set to a nullish value */
     required: true,
+    unique: true,
   },
   password: {
     type: String,
     required: true,
+    select: false,
   },
   highestScore: {
     type: String,
-    default: 'N/A',
+    default: "N/A",
   },
   mostRecentScore: {
     type: String,
-    default: 'N/A',
+    default: "N/A",
   },
   acctCreated: {
     type: String,
@@ -27,6 +29,6 @@ const profileSchema = mongoose.Schema({
   },
 });
 
-const Profile = mongoose.model('Profile', profileSchema);
+const Profile = mongoose.model("Profile", profileSchema);
 
-export default Profile
+export default Profile;

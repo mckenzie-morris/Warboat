@@ -11,17 +11,19 @@ const login = async (req, res, next) => {
     }
 
     const profile = await Profile.findOne({ username: submittedUsername })
+      .select("+password")
       .lean()
       .exec();
     if (!profile) {
       return res.status(404).json({ message: "profile not found" });
     }
-    console.log("profile found ✅");
 
     const isMatch = await bcrypt.compare(submittedPassword, profile.password);
     if (!isMatch) {
       return res.status(401).json({ message: "password incorrect" });
     }
+    delete profile.password;
+    console.log("profile found ✅\n", profile);
     // instantiate a jwt access token after successfully logging-in
     const accessToken = jwt.sign(
       // payload
@@ -82,7 +84,6 @@ const refresh = (req, res, next) => {
         const profile = await Profile.findOne({
           username: decoded.Profile.username,
         })
-          .select("-password")
           .lean()
           .exec();
 

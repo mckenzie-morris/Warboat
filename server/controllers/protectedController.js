@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 const profile = async (req, res, next) => {
   try {
     const profile = await Profile.findOne({ username: req.username })
-      .select("-_id -password -__v")
+      .select("-_id -__v")
       .lean()
       .exec();
     if (!profile) {
@@ -26,7 +26,6 @@ const changeUsername = async (req, res, next) => {
     }
 
     const duplicate = await Profile.findOne({ username: newUsername })
-      .select("-password")
       .lean()
       .exec();
     if (duplicate) {
@@ -43,9 +42,10 @@ const changeUsername = async (req, res, next) => {
       {
         new: true,
         lean: true,
-        fields: "username highestScore mostRecentScore acctCreated -password",
+        fields: "username highestScore mostRecentScore acctCreated",
       },
     );
+    console.log('updated profile \n', profile)
     // clear refresh token with outdated username
     res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
 

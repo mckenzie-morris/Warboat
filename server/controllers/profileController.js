@@ -6,7 +6,9 @@ const getAllProfiles = async (req, res, next) => {
   try {
     // .lean() returns plain JavaScript objects instead of full Mongoose documents
     // using .exec() with an await gives better strack traces
-    const profiles = await Profile.find({}).select("-password").lean().exec();
+    const profiles = await Profile.find({})
+      .lean()
+      .exec();
     // if no profiles are found, return 404
     if (!profiles.length) {
       return res.status(404).json({ message: "No profiles found" });
@@ -29,9 +31,10 @@ const createNewProfile = async (req, res, next) => {
       return res.status(400).json({ message: "passwords must match" });
     }
     const duplicate = await Profile.findOne({ username: submittedUsername })
-      .select("-password")
       .lean()
       .exec();
+    console.log("duplicate username ❌\n", duplicate);
+
     if (duplicate) {
       // status 409: conflict; when a request conflicts with the current state of the server
       return res.status(409).json({ message: "username already exists" });
@@ -44,14 +47,18 @@ const createNewProfile = async (req, res, next) => {
 
     const profileDoc = { username: submittedUsername, password: hashedPwd };
     const profile = await Profile.create(profileDoc);
+    // transform mongoose document object into plain JavaScript object
+    const profileSansPassword = profile.toObject();
+    // delete password from JavaScript object
+    delete profileSansPassword.password;
     // .create() returns a promise that resolves to the newly created document (profile)
-    console.log("profile created ✅\n", profile);
-    if (profile) {
+    console.log("profile created ✅\n", profileSansPassword);
+    if (profileSansPassword) {
       // instantiate a jwt access token after successfully logging-in
       const accessToken = jwt.sign(
         // payload
         {
-          Profile: { username: profile.username },
+          Profile: { username: profileSansPassword.username },
         },
         // secret key
         process.env.ACCESS_TOKEN_SECRET,
@@ -61,7 +68,7 @@ const createNewProfile = async (req, res, next) => {
       // instantiate a jwt refresh token after successfully logging-in
       const refreshToken = jwt.sign(
         {
-          Profile: { username: profile.username },
+          Profile: { username: profileSansPassword.username },
         },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: "1d" },
@@ -79,7 +86,7 @@ const createNewProfile = async (req, res, next) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
-      return res.status(201).json([{ accessToken }, profile.username]);
+      return res.status(201).json([{ accessToken }, profileSansPassword.username]);
     }
     return res.status(400).json({ message: "invalid user data received" });
   } catch (error) {
@@ -95,6 +102,7 @@ const deleteProfile = async (req, res, next) => {
       return res.status(400).json({ message: "both fields required" });
     }
     const profile = await Profile.findOne({ username: submittedUsername })
+      .select("+password")
       .lean()
       .exec();
     if (!profile) {
@@ -107,7 +115,7 @@ const deleteProfile = async (req, res, next) => {
     }
     // if submitted password matches db password, execute delete function (delete from db)
     const deletedProfile = await Profile.findByIdAndDelete(profile._id);
-    console.log("profile deleted ❌");
+    console.log("profile deleted ❌\n", deletedProfile);
     return res
       .status(200)
       .json({ message: `${submittedUsername} successfully deleted` });
