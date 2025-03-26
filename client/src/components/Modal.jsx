@@ -34,6 +34,8 @@ const ModularModal = ({
           {alternativeContent ? (
             <h1 className="text-9xl">{alternativeContent}</h1>
           ) : (
+            /* <></> (shorthand for <Fragment></Fragment>) has no effect on the resulting DOM; 
+            it is the same as if the elements were not grouped. */
             <>
               {modalContent}
               <Button

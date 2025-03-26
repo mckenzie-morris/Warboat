@@ -6,7 +6,7 @@ const getAllProfiles = async (req, res, next) => {
   try {
     // .lean() returns plain JavaScript objects instead of full Mongoose documents
     // using .exec() with an await gives better strack traces
-    const profiles = await Profile.find({}).lean().exec();
+    const profiles = await Profile.find({}).select("-password").lean().exec();
     // if no profiles are found, return 404
     if (!profiles.length) {
       return res.status(404).json({ message: "No profiles found" });
@@ -29,6 +29,7 @@ const createNewProfile = async (req, res, next) => {
       return res.status(400).json({ message: "passwords must match" });
     }
     const duplicate = await Profile.findOne({ username: submittedUsername })
+      .select("-password")
       .lean()
       .exec();
     if (duplicate) {
@@ -44,7 +45,7 @@ const createNewProfile = async (req, res, next) => {
     const profileDoc = { username: submittedUsername, password: hashedPwd };
     const profile = await Profile.create(profileDoc);
     // .create() returns a promise that resolves to the newly created document (profile)
-    console.log('profile created/ return document: ', profile)
+    console.log("profile created ✅\n", profile);
     if (profile) {
       // instantiate a jwt access token after successfully logging-in
       const accessToken = jwt.sign(
@@ -99,8 +100,6 @@ const deleteProfile = async (req, res, next) => {
     if (!profile) {
       return res.status(404).json({ message: "profile not found" });
     }
-    console.log("profile found ✅\n", profile);
-
     // compare submitted password to profile's password from database
     const isMatch = await bcrypt.compare(submittedPassword, profile.password);
     if (!isMatch) {
@@ -108,7 +107,7 @@ const deleteProfile = async (req, res, next) => {
     }
     // if submitted password matches db password, execute delete function (delete from db)
     const deletedProfile = await Profile.findByIdAndDelete(profile._id);
-    console.log("profile deleted 🚩\n", deletedProfile);
+    console.log("profile deleted ❌");
     return res
       .status(200)
       .json({ message: `${submittedUsername} successfully deleted` });

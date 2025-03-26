@@ -4,14 +4,12 @@ import jwt from "jsonwebtoken";
 const profile = async (req, res, next) => {
   try {
     const profile = await Profile.findOne({ username: req.username })
+      .select("-_id -password -__v")
       .lean()
       .exec();
     if (!profile) {
       return res.status(404).json({ message: "profile not found" });
     }
-    delete profile._id;
-    delete profile.password;
-    delete profile.__v;
     return res.status(200).json(profile);
   } catch (error) {
     return next(error);
@@ -28,6 +26,7 @@ const changeUsername = async (req, res, next) => {
     }
 
     const duplicate = await Profile.findOne({ username: newUsername })
+      .select("-password")
       .lean()
       .exec();
     if (duplicate) {
@@ -44,7 +43,7 @@ const changeUsername = async (req, res, next) => {
       {
         new: true,
         lean: true,
-        fields: "username highestScore mostRecentScore acctCreated",
+        fields: "username highestScore mostRecentScore acctCreated -password",
       },
     );
     // clear refresh token with outdated username
@@ -61,7 +60,7 @@ const changeUsername = async (req, res, next) => {
 
       { expiresIn: "10s" },
     );
-    // instantiate a new jwt refresh token 
+    // instantiate a new jwt refresh token
     const refreshToken = jwt.sign(
       {
         Profile: { username: profile.username },

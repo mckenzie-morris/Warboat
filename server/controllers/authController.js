@@ -16,7 +16,7 @@ const login = async (req, res, next) => {
     if (!profile) {
       return res.status(404).json({ message: "profile not found" });
     }
-    console.log("profile found ✅\n", profile);
+    console.log("profile found ✅");
 
     const isMatch = await bcrypt.compare(submittedPassword, profile.password);
     if (!isMatch) {
@@ -54,7 +54,7 @@ const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     // send access token as part of response
-    return res.status(200).json([{accessToken}, profile.username]);
+    return res.status(200).json([{ accessToken }, profile.username]);
   } catch (error) {
     return next(error);
   }
@@ -79,7 +79,10 @@ const refresh = (req, res, next) => {
           return res.status(403).json({ message: "forbidden" });
         }
 
-        const profile = await Profile.findOne({ username: decoded.Profile.username })
+        const profile = await Profile.findOne({
+          username: decoded.Profile.username,
+        })
+          .select("-password")
           .lean()
           .exec();
 
@@ -93,7 +96,7 @@ const refresh = (req, res, next) => {
           { expiresIn: "10s" },
         );
         // send access token as part of response
-        return res.status(200).json([{accessToken}, profile.username]);
+        return res.status(200).json([{ accessToken }, profile.username]);
       } catch (error) {
         return next(error);
       }
@@ -105,8 +108,6 @@ const refresh = (req, res, next) => {
 const logout = (req, res, next) => {
   const cookies = req.cookies;
   // if refresh token has already been cleared from cookie, no further action needed
-  // console.log(req)
-  console.log(cookies)
   if (!cookies?.jwt) {
     return res.sendStatus(204);
   }

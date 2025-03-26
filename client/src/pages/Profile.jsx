@@ -18,7 +18,6 @@ const Profile = () => {
   React.useEffect(() => {
     // map 'loggedInRef' to 'isLoggedIn' state
     loggedInRef.current = isLoggedIn;
-    console.log("loggedInRef.current: ", loggedInRef.current);
   }, [isLoggedIn]);
 
   React.useEffect(() => {
