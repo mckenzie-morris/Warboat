@@ -17,7 +17,7 @@ const submitCredentials = async (setStateFunc) => {
         TLS client certificates) */
       { withCredentials: true },
     );
-    console.log("🚩 successful login: ", response.data);
+    console.log("successful login ✅", response.data);
     setStateFunc(response.data);
   } catch (error) {
     console.log(error.response?.data);

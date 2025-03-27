@@ -12,7 +12,7 @@ const logout = async (setStateFunc) => {
       same-origin requests */
       { withCredentials: true },
     );
-    console.log("🚩 successful axios request: ", response);
+    console.log("successful logout ✅", response);
     setStateFunc(null)
   } catch (error) {
     console.log(error);

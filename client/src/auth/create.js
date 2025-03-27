@@ -19,7 +19,7 @@ const submitCreate = async (setStateFunc) => {
         TLS client certificates) */
       { withCredentials: true },
     );
-    console.log("🚩 successful profile creation: ", response.data);
+    console.log("successful profile creation ✅", response.data);
     setStateFunc(response.data);
   } catch (error) {
     console.log(error.response?.data);

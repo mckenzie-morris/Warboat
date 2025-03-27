@@ -29,7 +29,7 @@ const requestProfileData = async (
           TLS client certificates) */
       withCredentials: true,
     });
-    console.log("🚩 successful axios request: ", response.data);
+    console.log("profile data request successful ✅", response.data);
     setServerResponseFunc(response.data);
   } catch (error) {
     console.log(error.response?.data);

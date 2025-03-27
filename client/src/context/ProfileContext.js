@@ -20,7 +20,7 @@ const ProfileProvider = ({ children }) => {
 
   React.useEffect(() => {
     // isLoggedIn = Array --> [{accessToken: <...>}, <username>]
-    console.log("logged in: ", isLoggedIn);
+    console.log("🚩 logged in:", isLoggedIn);
   }, [isLoggedIn]);
 
   return (

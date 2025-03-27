@@ -10,7 +10,7 @@ const refreshToken = async (setStateFunc) => {
         TLS client certificates) */
       { withCredentials: true },
     );
-    console.log("🚩 successful refresh token request: ", response.data);
+    console.log("successful access token refresh ✅", response.data);
     if (setStateFunc) {
       setStateFunc(response.data);
     }

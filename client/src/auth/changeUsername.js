@@ -1,7 +1,7 @@
 
 import { instanceWithInterceptor } from "../apis/interceptor.js";
 
-const changeUsername = async (accessT, setStateFunc) => {
+const changeUsername = async (accessToken, setStateFunc) => {
     const newUsername = document.getElementById("input-NewUsername").value
     const confirmedNewUsername = document.getElementById("input-confirm-NewUsername").value
     const submittedPassword = document.getElementById("input-confirm-NewUsername").value
@@ -20,7 +20,7 @@ const changeUsername = async (accessT, setStateFunc) => {
               or the necessary amount of time has elapsed for the 'ProfileProvider' to return a new 
               access token from the '/refresh' endpoint, send the access token on the appropriate
                request header */
-            Authorization: `Bearer ${accessT}`,
+            Authorization: `Bearer ${accessToken}`,
           },
 
           // attach setState function 'setLoggedIn' to request config
@@ -30,7 +30,7 @@ const changeUsername = async (accessT, setStateFunc) => {
             TLS client certificates) */
            withCredentials: true },
         );
-        console.log("🚩 successful name change: ", response.data);
+        console.log("successful name change ✅", response.data);
         setStateFunc(response.data);
         return "username change successful"
       } catch (error) {

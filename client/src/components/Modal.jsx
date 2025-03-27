@@ -7,16 +7,22 @@ const ModularModal = ({
   modalContent,
   alternativeContent,
   closeCondition,
+  openOrClosed
 }) => {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true)
+    openOrClosed?.(true)
+  };
+  const handleClose = () => {
+    setOpen(false)
+    openOrClosed?.(false)
+  };
   React.useEffect(() => {
     if (closeCondition === true) {
       setOpen(false);
     }
   }, [closeCondition]);
-  
 
   return (
     <div>

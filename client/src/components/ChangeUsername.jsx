@@ -15,9 +15,19 @@ const ChangeUsername = () => {
   const [validConfirmState, setValidConfirmState] = React.useState(null);
   const [alternativeContentState, setAlternativeContentState] = React.useState(null);
   const [closeModalState, setCloseModalState] = React.useState(false);
+  const [openOrClosedState, setOpenOrClosedState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (openOrClosedState) {
+      setValidUsernameState(null)
+      setValidPasswordState(null)
+      setValidConfirmState(null)
+    }
+  }, [openOrClosedState])
 
   return (
     <Modal
+      openOrClosed={setOpenOrClosedState}
       alternativeContent={alternativeContentState}
       closeCondition={closeModalState}
       displayTextOpenButton="Change Username!!!"
