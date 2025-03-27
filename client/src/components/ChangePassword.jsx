@@ -7,10 +7,22 @@ import Button from "@mui/material/Button";
 
 const ChangePassword = () => {
   const [validPasswordState, setValidPasswordState] = React.useState(null);
-  const [validNewPasswordState, setValidNewPasswordState] = React.useState(null);
+  const [validNewPasswordState, setValidNewPasswordState] =
+    React.useState(null);
   const [validConfirmState, setValidConfirmState] = React.useState(null);
+  const [openOrClosedState, setOpenOrClosedState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (openOrClosedState) {
+      setValidPasswordState(null)
+      setValidNewPasswordState(null)
+      setValidConfirmState(null)
+    }
+  }, [openOrClosedState])
+
   return (
     <Modal
+      openOrClosed={setOpenOrClosedState}
       displayTextOpenButton="Change Password!!!"
       displayTextCloseButton="clooooose"
       modalContent={
@@ -29,6 +41,13 @@ const ChangePassword = () => {
             id="input-password"
             // validate username when input loses focus
             onBlur={() => {
+              if (
+                validNewPasswordState !== null &&
+                document.getElementById("input-NewPassword").value ===
+                  document.getElementById("input-password").value
+              ) {
+                setValidNewPasswordState(false);
+              }
               if (!document.getElementById("input-password").value) {
                 return setValidPasswordState(false);
               } else return setValidPasswordState(true);
@@ -48,27 +67,34 @@ const ChangePassword = () => {
             // if non-valid password entered, show helper text
             helperText={
               validNewPasswordState === false
-                ? "password must be between 3 and 20 characters in length, and may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-)"
+                ? "new password must be between 3 and 20 characters in length, may consist only of letters, numbers, and non-consecutive underscores (_) and dashes (-), and may not match the old password"
                 : ""
             }
             id="input-NewPassword"
             // validate password when input loses focus
             onBlur={() => {
               setValidNewPasswordState(
-                validateInput(document.getElementById("input-NewPassword").value),
+                validateInput(
+                  document.getElementById("input-NewPassword").value,
+                ),
               );
-              /* if creating acct/profile, and user changes password after password confirmation 
-                entry and no longer match, pass false to confirm password state */
               if (
+                validPasswordState !== null &&
+                document.getElementById("input-password").value ===
+                  document.getElementById("input-NewPassword").value
+              ) {
+                setValidNewPasswordState(false);
+              } else if (
+              /* if changing password, and user changes new password after new password confirmation 
+                entry and no longer match, pass false to confirm new password state */
                 validConfirmState !== null &&
                 document.getElementById("input-confirm-newPassword").value !==
                   document.getElementById("input-NewPassword").value
               ) {
                 setValidConfirmState(false);
               } else if (
-                /* if creating acct/profile, and user changes password after password confirmation 
-                  entry and match, pass true to confirm password state */
-
+                /* if changing password, and user changes new password after new password confirmation 
+                  entry and match, pass true to confirm new password state */
                 validConfirmState !== null &&
                 document.getElementById("input-confirm-newPassword").value ===
                   document.getElementById("input-NewPassword").value
@@ -93,7 +119,7 @@ const ChangePassword = () => {
               error={validConfirmState === false}
               // if non-valid confirmation password entered, show helper text
               helperText={
-                validConfirmState === false ? "must match password" : ""
+                validConfirmState === false ? "must match new password" : ""
               }
               id="input-confirm-newPassword"
               // validate confirmation password when input loses focus
@@ -115,7 +141,11 @@ const ChangePassword = () => {
             {/* if username, password, and confirmation password are valid, enable button */}
             <Button
               disabled={
-                !(validPasswordState && validNewPasswordState && validConfirmState)
+                !(
+                  validPasswordState &&
+                  validNewPasswordState &&
+                  validConfirmState
+                )
               }
               onClick={() => {
                 submitCreate(setLoggedIn);
