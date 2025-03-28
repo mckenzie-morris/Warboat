@@ -4,25 +4,32 @@ import loginUtils from "../utils/login";
 const { validateInput } = loginUtils();
 import Lock from "@mui/icons-material/Lock";
 import Button from "@mui/material/Button";
+import changePassword from "../auth/changePassword.js";
+import { ProfileContext } from "../index.jsx";
 
 const ChangePassword = () => {
+  const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   const [validPasswordState, setValidPasswordState] = React.useState(null);
   const [validNewPasswordState, setValidNewPasswordState] =
     React.useState(null);
   const [validConfirmState, setValidConfirmState] = React.useState(null);
+  const [alternativeContentState, setAlternativeContentState] = React.useState(null);
+  const [closeModalState, setCloseModalState] = React.useState(false);
   const [openOrClosedState, setOpenOrClosedState] = React.useState(false);
 
   React.useEffect(() => {
     if (openOrClosedState) {
-      setValidPasswordState(null)
-      setValidNewPasswordState(null)
-      setValidConfirmState(null)
+      setValidPasswordState(null);
+      setValidNewPasswordState(null);
+      setValidConfirmState(null);
     }
-  }, [openOrClosedState])
+  }, [openOrClosedState]);
 
   return (
     <Modal
       openOrClosed={setOpenOrClosedState}
+      alternativeContent={alternativeContentState}
+      closeCondition={closeModalState}
       displayTextOpenButton="Change Password!!!"
       displayTextCloseButton="clooooose"
       modalContent={
@@ -85,7 +92,7 @@ const ChangePassword = () => {
               ) {
                 setValidNewPasswordState(false);
               } else if (
-              /* if changing password, and user changes new password after new password confirmation 
+                /* if changing password, and user changes new password after new password confirmation 
                 entry and no longer match, pass false to confirm new password state */
                 validConfirmState !== null &&
                 document.getElementById("input-confirm-newPassword").value !==
@@ -147,8 +154,17 @@ const ChangePassword = () => {
                   validConfirmState
                 )
               }
-              onClick={() => {
-                submitCreate(setLoggedIn);
+              onClick={async () => {
+                const serverRes = await changePassword(
+                  isLoggedIn[0].accessToken,
+                  setLoggedIn,
+                );
+                setAlternativeContentState(serverRes);
+                setCloseModalState(false)
+                setTimeout(() => {
+                  setAlternativeContentState(null)
+                  setCloseModalState(false)
+                }, 2500);
               }}
               id="button-create-acct"
               className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"

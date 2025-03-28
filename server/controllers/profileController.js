@@ -33,7 +33,8 @@ const createNewProfile = async (req, res, next) => {
     const duplicate = await Profile.findOne({ username: submittedUsername })
       .lean()
       .exec();
-    console.log("duplicate username ❌\n", duplicate);
+      if (duplicate) console.log("duplicate username ❌\n", duplicate);
+
 
     if (duplicate) {
       // status 409: conflict; when a request conflicts with the current state of the server

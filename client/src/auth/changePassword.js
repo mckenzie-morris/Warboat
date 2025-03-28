@@ -1,17 +1,17 @@
 import { instanceWithInterceptor } from "../apis/interceptor.js";
 
-const changeUsername = async (accessToken, setStateFunc) => {
-    const newUsername = document.getElementById("input-NewUsername").value
-    const confirmedNewUsername = document.getElementById("input-confirm-NewUsername").value
-    const submittedPassword = document.getElementById("input-confirm-NewUsername").value
+const changePassword = async (accessToken, setStateFunc) => {
+    const oldPassword = document.getElementById("input-password").value
+    const newPassword = document.getElementById("input-NewPassword").value
+    const confirmedNewPassword = document.getElementById("input-confirm-newPassword").value
     try {
         const response = await instanceWithInterceptor.patch(
-          "/profile/username",
+          "/profile/password",
           // request config object
           {
-            newUsername: newUsername,
-            confirmedNewUsername: confirmedNewUsername,
-            submittedPassword: submittedPassword,
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            confirmedNewPassword: confirmedNewPassword,
           },
           {
           headers: {
@@ -29,13 +29,13 @@ const changeUsername = async (accessToken, setStateFunc) => {
             TLS client certificates) */
            withCredentials: true },
         );
-        console.log("successful name change ✅", response.data);
+        console.log("successful password change ✅", response.data);
         setStateFunc(response.data);
-        return "username change successful"
+        return "password change successful"
       } catch (error) {
         console.log(error.response?.data);
         return `error occurred: ${JSON.stringify(error.response?.data?.message)}`
       }
 }
 
-export default changeUsername
+export default changePassword

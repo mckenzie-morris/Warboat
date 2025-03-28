@@ -1,4 +1,5 @@
 import Profile from "../models/profile.js";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const profile = async (req, res, next) => {
@@ -96,11 +97,13 @@ const changePassword = async (req, res, next) => {
       return res.status(400).json({ message: "passwords must match" });
     }
 
+    const hashedPwd = await bcrypt.hash(newPassword, 10);
+
     const profile = await Profile.findOneAndUpdate(
       // filter
       { username: req.username },
       // update
-      { password: newPassword },
+      { password: hashedPwd },
       // options
       {
         new: true,
