@@ -1,12 +1,17 @@
 import express from "express";
 const router = express.Router();
-import { profile, changeUsername } from "../controllers/protectedController.js";
+import {
+  profile,
+  changeUsername,
+  changePassword,
+} from "../controllers/protectedController.js";
 
 import verifyJWT from "../middlewares/verifyJWT.js";
 
-router.use(verifyJWT)
+router.use(verifyJWT);
 
 router.route("/profile").get(profile);
 router.route("/profile/username").patch(changeUsername);
+router.route("/profile/password").patch(changePassword);
 
-export default router
+export default router;
