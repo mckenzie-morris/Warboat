@@ -97,11 +97,25 @@ const changePassword = async (req, res, next) => {
       return res.status(400).json({ message: "passwords must match" });
     }
 
+    const profile = await Profile.findOne({ username: req.username })
+      .select("+password")
+      .lean()
+      .exec();
+    if (!profile) {
+      return res.status(404).json({ message: "profile not found" });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, profile.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "password incorrect" });
+    }
+    delete profile.password;
+
     const hashedPwd = await bcrypt.hash(newPassword, 10);
 
-    const profile = await Profile.findOneAndUpdate(
+    const updatedProfile = await Profile.findOneAndUpdate(
       // filter
-      { username: req.username },
+      { username: profile.username },
       // update
       { password: hashedPwd },
       // options
@@ -111,19 +125,19 @@ const changePassword = async (req, res, next) => {
         fields: "username highestScore mostRecentScore acctCreated",
       },
     );
-    console.log("updated profile ✅\n", profile);
+    console.log("updated profile ✅\n", updatedProfile);
     // instantiate a new jwt access token
     const accessToken = jwt.sign(
       // payload
       {
-        Profile: { username: profile.username },
+        Profile: { username: updatedProfile.username },
       },
       // secret key
       process.env.ACCESS_TOKEN_SECRET,
 
       { expiresIn: "10s" },
     );
-    return res.status(200).json([{ accessToken }, profile.username]);
+    return res.status(200).json([{ accessToken }, updatedProfile.username]);
   } catch (error) {
     return next(error);
   }

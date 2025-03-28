@@ -13,7 +13,8 @@ const ChangePassword = () => {
   const [validNewPasswordState, setValidNewPasswordState] =
     React.useState(null);
   const [validConfirmState, setValidConfirmState] = React.useState(null);
-  const [alternativeContentState, setAlternativeContentState] = React.useState(null);
+  const [alternativeContentState, setAlternativeContentState] =
+    React.useState(null);
   const [closeModalState, setCloseModalState] = React.useState(false);
   const [openOrClosedState, setOpenOrClosedState] = React.useState(false);
 
@@ -55,6 +56,20 @@ const ChangePassword = () => {
               ) {
                 setValidNewPasswordState(false);
               }
+
+              if (
+                validNewPasswordState !== null &&
+                document.getElementById("input-NewPassword").value !==
+                  document.getElementById("input-password").value &&
+                setValidNewPasswordState(
+                  validateInput(
+                    document.getElementById("input-NewPassword").value,
+                  ),
+                )
+              ) {
+                setValidNewPasswordState(true);
+              }
+
               if (!document.getElementById("input-password").value) {
                 return setValidPasswordState(false);
               } else return setValidPasswordState(true);
@@ -160,10 +175,10 @@ const ChangePassword = () => {
                   setLoggedIn,
                 );
                 setAlternativeContentState(serverRes);
-                setCloseModalState(false)
+                setCloseModalState(false);
                 setTimeout(() => {
-                  setAlternativeContentState(null)
-                  setCloseModalState(false)
+                  setAlternativeContentState(null);
+                  setCloseModalState(false);
                 }, 2500);
               }}
               id="button-create-acct"
