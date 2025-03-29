@@ -143,7 +143,7 @@ const ChangeUsername = () => {
                   isLoggedIn[0].accessToken,
                   setLoggedIn,
                 );
-                setAlternativeContentState(serverRes);
+                setAlternativeContentState((<h1 className="text-9xl">{serverRes}</h1>));
                 setCloseModalState(false)
                 setTimeout(() => {
                   setAlternativeContentState(null)

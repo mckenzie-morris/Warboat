@@ -6,9 +6,7 @@ const getAllProfiles = async (req, res, next) => {
   try {
     // .lean() returns plain JavaScript objects instead of full Mongoose documents
     // using .exec() with an await gives better strack traces
-    const profiles = await Profile.find({})
-      .lean()
-      .exec();
+    const profiles = await Profile.find({}).lean().exec();
     // if no profiles are found, return 404
     if (!profiles.length) {
       return res.status(404).json({ message: "No profiles found" });
@@ -33,8 +31,7 @@ const createNewProfile = async (req, res, next) => {
     const duplicate = await Profile.findOne({ username: submittedUsername })
       .lean()
       .exec();
-      if (duplicate) console.log("duplicate username ❌\n", duplicate);
-
+    if (duplicate) console.log("duplicate username ❌\n", duplicate);
 
     if (duplicate) {
       // status 409: conflict; when a request conflicts with the current state of the server
@@ -87,7 +84,9 @@ const createNewProfile = async (req, res, next) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
-      return res.status(201).json([{ accessToken }, profileSansPassword.username]);
+      return res
+        .status(201)
+        .json([{ accessToken }, profileSansPassword.username]);
     }
     return res.status(400).json({ message: "invalid user data received" });
   } catch (error) {
@@ -95,34 +94,4 @@ const createNewProfile = async (req, res, next) => {
   }
 };
 
-const deleteProfile = async (req, res, next) => {
-  try {
-    const { submittedUsername, submittedPassword } = req.body;
-
-    if (!submittedUsername || !submittedPassword) {
-      return res.status(400).json({ message: "both fields required" });
-    }
-    const profile = await Profile.findOne({ username: submittedUsername })
-      .select("+password")
-      .lean()
-      .exec();
-    if (!profile) {
-      return res.status(404).json({ message: "profile not found" });
-    }
-    // compare submitted password to profile's password from database
-    const isMatch = await bcrypt.compare(submittedPassword, profile.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "password incorrect" });
-    }
-    // if submitted password matches db password, execute delete function (delete from db)
-    const deletedProfile = await Profile.findByIdAndDelete(profile._id);
-    console.log("profile deleted ❌\n", deletedProfile);
-    return res
-      .status(200)
-      .json({ message: `${submittedUsername} successfully deleted` });
-  } catch (error) {
-    return next(error);
-  }
-};
-
-export { getAllProfiles, createNewProfile, deleteProfile };
+export { getAllProfiles, createNewProfile };

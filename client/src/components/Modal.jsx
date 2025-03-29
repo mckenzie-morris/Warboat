@@ -38,7 +38,7 @@ const ModularModal = ({
           className="fixed left-1/2 top-1/2 flex max-h-full max-w-full -translate-x-1/2 -translate-y-1/2 flex-col justify-center bg-gray-500"
         >
           {alternativeContent ? (
-            <h1 className="text-9xl">{alternativeContent}</h1>
+            <div>{alternativeContent}</div>
           ) : (
             /* <></> (shorthand for <Fragment></Fragment>) has no effect on the resulting DOM; 
             it is the same as if the elements were not grouped. */

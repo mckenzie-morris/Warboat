@@ -143,4 +143,34 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-export { profile, changeUsername, changePassword };
+const deleteProfile = async (req, res, next) => {
+  try {
+    const { submittedUsername, submittedPassword } = req.body;
+
+    if (!submittedUsername || !submittedPassword) {
+      return res.status(400).json({ message: "both fields required" });
+    }
+    const profile = await Profile.findOne({ username: submittedUsername })
+      .select("+password")
+      .lean()
+      .exec();
+    if (!profile) {
+      return res.status(404).json({ message: "profile not found" });
+    }
+    // compare submitted password to profile's password from database
+    const isMatch = await bcrypt.compare(submittedPassword, profile.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "password incorrect" });
+    }
+    // if submitted password matches db password, execute delete function (delete from db)
+    const deletedProfile = await Profile.findByIdAndDelete(profile._id);
+    console.log("profile deleted ❌\n", deletedProfile);
+    return res
+      .status(200)
+      .json({ message: `${submittedUsername} successfully deleted` });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export { profile, changeUsername, changePassword, deleteProfile };
