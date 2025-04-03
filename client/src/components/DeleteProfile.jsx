@@ -3,16 +3,31 @@ import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Lock from "@mui/icons-material/Lock";
 import Button from "@mui/material/Button";
+import deleteProfile from "../auth/delete.js";
+import { ProfileContext } from "../index.jsx";
 
 const DeleteProfile = () => {
+  const { isLoggedIn, setLoggedIn } = React.useContext(ProfileContext);
   const [validUsernameState, setValidUsernameState] = React.useState(null);
   const [validPasswordState, setValidPasswordState] = React.useState(null);
   const [alternativeContentState, setAlternativeContentState] =
     React.useState(null);
+  const [closeModalState, setCloseModalState] = React.useState(false);
+  const [openOrClosedState, setOpenOrClosedState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (openOrClosedState) {
+      setValidUsernameState(null);
+      setValidPasswordState(null);
+      setAlternativeContentState(null);
+    }
+  }, [openOrClosedState]);
 
   return (
     <Modal
+      openOrClosed={setOpenOrClosedState}
       alternativeContent={alternativeContentState}
+      closeCondition={closeModalState}
       displayTextOpenButton="Delete Account!!!"
       displayTextCloseButton="clooooose"
       modalContent={
@@ -71,21 +86,44 @@ const DeleteProfile = () => {
             disabled={!(validUsernameState && validPasswordState)}
             id="button-login"
             onClick={() => {
+              const submittedUsername =
+                document.getElementById("input-username").value;
+              const submittedPassword =
+                document.getElementById("input-password").value;
               setAlternativeContentState(
                 <>
                   <h1>Are you sure want to delete your account?</h1>
                   <Button
-                  className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"
-                  onClick={() => {
-
-                  }}
-                  >Forget it</Button>
-                                    <Button
-                 className="mx-auto mb-5 rounded-md bg-red-600 px-4 py-1 disabled:bg-gray-50"
-                  onClick={() => {
-                    
-                  }}
-                  >Delete it fam</Button>
+                    className="mx-auto mb-5 rounded-md bg-green-600 px-4 py-1 disabled:bg-gray-50"
+                    onClick={() => {
+                      setCloseModalState(true);
+                      setAlternativeContentState(null);
+                    }}
+                  >
+                    Forget it
+                  </Button>
+                  <Button
+                    className="mx-auto mb-5 rounded-md bg-red-600 px-4 py-1 disabled:bg-gray-50"
+                    onClick={async () => {
+                      console.log(submittedUsername, submittedPassword);
+                      const serverRes = await deleteProfile(
+                        isLoggedIn[0].accessToken,
+                        setLoggedIn,
+                        submittedUsername,
+                        submittedPassword,
+                      );
+                      setAlternativeContentState(
+                        <h1 className="text-9xl">{serverRes}</h1>,
+                      );
+                      setCloseModalState(false);
+                      setTimeout(() => {
+                        setAlternativeContentState(null);
+                        setCloseModalState(true);
+                      }, 2500);
+                    }}
+                  >
+                    Delete it fam
+                  </Button>
                 </>,
               );
             }}
