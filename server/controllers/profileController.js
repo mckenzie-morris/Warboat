@@ -35,7 +35,7 @@ const createNewProfile = async (req, res, next) => {
 
     if (duplicate) {
       // status 409: conflict; when a request conflicts with the current state of the server
-      return res.status(409).json({ message: "username already exists" });
+      return res.status(409).json({ message: "invalid username: please choose again" });
     }
     /* second parameter (10) is number of salt rounds; 
   

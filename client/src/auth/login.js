@@ -21,6 +21,7 @@ const submitCredentials = async (setStateFunc) => {
     setStateFunc(response.data);
   } catch (error) {
     console.log(error.response?.data);
+    return error.response?.data
   }
 };
 

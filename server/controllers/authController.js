@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
 
     const isMatch = await bcrypt.compare(submittedPassword, profile.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "password incorrect" });
+      return res.status(401).json({ message: "incorrect username and/or password" });
     }
     delete profile.password;
     console.log("profile found ✅\n", profile);
