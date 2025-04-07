@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
 import Hero from "../components/Hero.jsx";
+import Gameboard from "../components/Gameboard.jsx";
 
 const Game = () => {
   return (
@@ -11,6 +12,7 @@ const Game = () => {
           Return Home
         </Button>
       </Link>
+      <Gameboard/>
     </div>
   );
 };
