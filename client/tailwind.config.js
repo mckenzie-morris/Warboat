@@ -24,11 +24,17 @@ export default {
       },
       // screens' units have to be in REM (as opposed to px) to integrate Fluid-Tailwind package
       screens: {
+        // 640px
         sm: "40rem",
+        // 768px
         md: "48rem",
+        // 1024px
         lg: "64rem",
+        // 1280px
         xl: "80rem",
+        // 1536px
         "2xl": "96rem",
+        // 1792px
         "3xl": "112rem",
       },
     },

@@ -1,0 +1,368 @@
+
+================================WEBPACK================================
+
+Initially, used webpack Dev Server and its Hot Module Realoading (devServer.hot) to develop
+UI. Also used devServer.historyApiFallback (set to true) so that when an endpoint other than
+the root endpoint was navigated to, instead of webpack's devServer 404ing (since webpack Dev 
+Server did not have a route defined nor was an Express route defined in the server for any 
+other endpoints) the index.jsx rendered the necessary page (route component) from React Router.
+
+Had to create a new instance of webpack.ProvidePlugin with key-value pair of {React: 'react'}
+in order to use the React module, otherwise React would be undefined in webpack Dev Server. this
+had the side-effect (benefit) of the React module being globally available without needing to 
+import it.
+
+Included a test for .jsx file extensions in module.rules, also added @babel/preset-react
+
+================================PACKAGE.JSON================================
+
+Downloaded (as devDependencies) for webpack:
+1.  "webpack"
+2.  "webpack-bundle-analyzer"
+3.  "webpack-cli"
+4.  "webpack-dev-server"
+5.  "@babel/core"
+6.  "@babel/preset-env"
+7.  "@babel/preset-react"
+8.  "babel-loader"
+9.  "css-loader"
+10. "postcss-loader" (needed for postcss, which was a requirement to integrate Tailwind into webpack)
+11. "style-loader"
+12. "html-webpack-plugin"
+
+Downloaded (as devDependencies) for Tailwind:
+1. "tailwindcss"
+2. "postcss" (necessary for webpack integration)
+3. "autoprefixer" (facilitates cross-browser compatibility for CSS)
+4. "prettier" (was necessary to use the plugin directly below, plus .prettierc.json file in root 
+directory)
+5. "prettier-plugin-tailwindcss" (sorts Tailwind classes)
+
+other devDependencies:
+1. "concurrently" run CLI commands at the same time
+
+non-essential dependencies (not a complete list):
+1. "@designbycode/tailwindcss-text-shadow"  extends classes in Tailwind for text shadow customization
+2. "fluid-tailwind" scales utilities smoothly between breakpoints
+3. "animate.css" library of ready-to-use, cross-browser animations
+4. "@mui/material" library of React UI components and hooks
+5. "@emotion/react" and "@emotion/styled" for the above library
+6. "react-slick" & "slick-carousel" for the ladder's Carousel React component
+
+
+================================COMPONENT LIBRARY================================
+
+Initially, was using Material UI's Base library ("@mui/base") as it was described as "Unstyled 
+components and hooks". The prevailing logic was that it would be best to use a library with 
+absolutely minimal overhead (plus used Tailwind for styling). Removed @mui/base from app
+completely and switched to @mui/material, which saved approximately 4KB (according webpack 
+bundle analyzer) since @mui/material provided a much more straight-forward solution for Modal 
+component. Then had to wrap JSX component tree with StyledEngineProvider (with injectFirst prop) 
+from material library in order to ensure Tailwind styling took precedence.
+
+================================CAROUSEL COMPONENT================================
+
+Started with "react-multi-carousel" as it was customizable and seemingly easy to integrate.
+Ran into rendering issue, however, in which images would load after the Modal (and Carousel)
+component were opened, resulting in glaring layout shifts. Attempted to resolve issue by 
+pre-loading images, which involved looping through all of the images (as an array) when user 
+navigates to '/options' endpoint, instantiating an image using the 'Image()' constructor 
+function and setting the 'src' key to the value of the image at a given iteration. This method 
+virtually loads the image into the browser. Then, upon completion of the loop, only allow the 
+Modal component to open if all images are preloaded.
+
+The above was initially unsucessful, as the images' statuses indicated that they were not being
+pulled from the browser's cache, but were '...transferred over network...' (served by server) 
+This was remedied by setting the 'headers' option (under webpack's 
+'devServer') to:
+
+  headers: {
+    "Cache-Control": "public, max-age=31536000",
+  },
+
+In spite of this successfully caching images, the original rendering issue persisted and images 
+were duplicated, with one copy being pulled from the browser's cache and one copy pulled from the
+server. Concluded that "react-multi-carousel" was making the requests to the server under the
+hood, and that further attempts to resolve the issue were not worth the effort. Finally, removed
+"react-multi-carousel" and switched to "react-slick" & "slick-carousel".
+
+================================ERRORBOUNDARY COMPONENT================================
+
+Wrapped the router (and thus the entire app) in the ErrorBoundary (from "react-error-boundary" 
+package) component in order to handle (at least some) potential errors on the frontend. React 
+components can throw runtime errors for various reasons:
+
+1. A missing prop causes a bug.
+2. A component tries to access undefined data.
+3. Third-party libraries malfunction.
+
+Without error boundaries, such errors would cause the whole app to crash, leaving the user with 
+a blank screen or a console error.
+
+======================================PROJECT TREE======================================
+
+Restructured folders and files to divide frontend ('client') and backend ('server').
+
+The 'public' (client/public) folder contains static files that do not get processed by Webpack 
+and are directly served by the browser.
+
+The 'src' folder contains all source code, which Webpack processes, bundles, and optimizes.
+
+=====================================POSTCSS PACKAGE=====================================
+
+From TailwindCSS docs "Installing Tailwind CSS as a PostCSS plugin is the most seamless way 
+to integrate it with build tools like webpack..."
+
+PostCSS is a tool for transforming CSS with JavaScript plugins. It acts as a processor that 
+modifies your CSS before it reaches the browser.
+
+While Tailwind CSS is the framework that provides utility classes, PostCSS is the engine that 
+processes and optimizes Tailwind-generated styles behind the scenes.
+
+1. Tailwind scans files (based on content in tailwind.config.js).
+2. PostCSS processes the generated CSS:
+    -Removes unused styles (via Tailwind’s built-in purge feature).
+    -Adds vendor prefixes (-webkit-, -moz-, etc.) using Autoprefixer.
+
+Using Webpack, PostCSS is required to properly integrate Tailwind into the build process.
+
+==========================================AUTH==========================================
+
+Used JWT-based authentication because, with a React SPA, very few requests will necessarily be
+made to the server. Since fewer requests are being made to the server, and session-based authentication
+is predicated on the client's session ID being verified against the session ID for that user in
+the database (upon each request), it made sense to use JWT-based authentication as it is stateless.
+
+Initially assumed that since localhost does not use HTTPS, but plain HTTP, that when setting the
+cookie (for the refresh token) that it would necessarily have to have 'secure: false'. 
+With 'sameSite: none' (necessary for running both webpack dev server and the Express server), and
+'secure: false', the cookie was not being set. Even when that was changed (to 'secure: true'), the 
+cookie was still not being sent. This was due to not having the '{ withCredentials: true }' option 
+set in the axios request config object. 
+
+'{ withCredentials: true }' allows the browser to store the cookie if the server sends one, and 
+ensures the browser includes stored cookies when making cross-origin requests. The Express middleware:
+
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    credentials: true,
+  })
+);
+
+is necessary, because, without it, even if the browser sent the cookies ('{ withCredentials: true }'), 
+the server would ignore them (and other authentication-related data; auth headers and TLS certs).
+
+=====================================DB CONNECTION ERROR=====================================
+
+After returning from vacation (and using different wi-fi), when spinning-up server, was unable to 
+connect to database. Received the error:
+
+Error: querySrv ETIMEOUT _mongodb._tcp.warboat.qjbo5.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17) {
+  errno: undefined,
+  code: 'ETIMEOUT',
+  syscall: 'querySrv',
+  hostname: '_mongodb._tcp.warboat.qjbo5.mongodb.net'
+}
+
+Before traveling, WSL was likely using a working DNS (Domain Name System) server (either the router’s 
+DNS or Google’s DNS). A DNS is a server that simply maps domain names to IP addresses. This DNS 
+correctly resolved MongoDB Atlas’ SRV records, so everything worked fine. When connecting to a different 
+Wi-Fi network on vacation, Windows automatically updated its DNS settings to match that network; Windows 
+dynamically assigns DNS servers based on the network it is connected to. DNS settings are typically 
+assigned by the network (router) via DHCP (Dynamic Host Configuration Protocol), and, When switching 
+networks, Windows automatically accepts the DNS server assigned by the new router.
+
+When reconnecting to home Wi-Fi, Windows updated its own DNS settings, but WSL did not properly reset 
+its DNS. Instead, WSL kept using the old DNS (192.168.128.1), which was no longer valid after switching 
+back to the home network. This caused DNS resolution failures only inside WSL, even though Windows 
+itself could resolve domains correctly.
+
+The following steps were taken in order to resolve the issue:
+
+1. Disabled WSL's auto-generated DNS
+  -opened WSL's configuration with:
+    sudo nano /etc/wsl.conf
+  -Added the following directives:
+    [network]
+    generateResolvConf = false
+  -saved the above two lines (using Ctrl + X, then Y, then Enter)
+
+2. Removed the broken DNS configuration:
+  -ran:
+    sudo rm /etc/resolv.conf
+
+3. Manually set a new DNS (Google) configuration:
+  -ran:
+    sudo nano /etc/resolv.conf
+  -Added:
+    nameserver 8.8.8.8
+    nameserver 8.8.4.4
+  -and saved
+  -then, made the file immutable (so WSL does not overwrite it) using:
+    sudo chattr +i /etc/resolv.conf
+
+4. Restarted WSL
+
+=======================================REACT CONTEXT=======================================
+
+In order to make the current user available throughout the application, decided to use React's
+'context' (first by instantiating it using 'createContext()', then calling 'useContext()' where 
+necessary). The 'useContext()' hook is a convenient way to pass data from a parent component to any
+of its children without the need for passing that data using prop drilling.
+
+From the React docs:
+
+"Use cases for context
+...
+Current account: Many components might need to know the currently logged in user. Putting it in context
+makes it convenient to read it anywhere in the tree. Some apps also let you operate multiple accounts 
+at the same time (e.g. to leave a comment as a different user). In those cases, it can be convenient to 
+wrap a part of the UI into a nested provider with a different current account value.
+..."
+
+==========================================AUTH FLOW==========================================
+
+Built a custom instance of Axios ('instanceWithInterceptor'). The order of operations for 
+'instanceWithInterceptor' is as follows:
+
+1. If no error occurs in the request/response cycle, simply return (the expected) response
+
+2. if a 403 error occurs (produced by verifyJWT middleware if the access token is invalid), the
+   setState function responsible for tracking whether a user is logged-in or not (that is attached
+   to the request config object when the instance is invoked) is passed-in to the 'refreshToken'
+   function, and returns not only a fresh Access Token, but also updates the logged-in state 
+   'isLoggedIn' (instantiated as a piece of state that is shared across components using context).
+
+3. The initial request is cloned, the new Access Token attached to the headers of the cloned request
+
+4. The cloned request with the new Access Token is then sent, and the response returned
+
+
+
+User logs in --> server sends Access Token [as JSON response], and sends ------------>------------->   
+                 Refresh Token [on HTTP(s)-only cookie] (authController)                           |                                                            
+                                     |                                                             | 
+                                     |                                                             | 
+                                     ▼                                                             ▼
+ ▲ --------> User attempts to access protected route (protectedRoutes)                   user refreshes browser
+ |                             (profile,                                                           |
+ |                              submitScore,                                                       |
+ |                              change username,                                                   | 
+ |                              change password,                                                   ▼
+ |                              delete profile)                                           Call /refresh route
+ |                                   |                                                             |
+ |                                   |                                                             | 
+ ▲                                   |                                                             |
+ |                                   ▼                                                             ▼------------->------------->------------->--------------->
+ |                   axios intercepts request (interceptor)                                                                                                  | 
+ |                                   |                                                                                                                       ▼ 
+ |                                   |                                                            Refresh Token successfully verified (authController) <-----||-----> Refresh Token missing or expired (authController)  
+ |                                   |                                                                                         |                                                            |
+ |                                   ▼------------->------------->------------->----->                                         |                                                            |
+ |                                                                                   |                                         ▼                                                            ▼
+ ▲                                                                                   |                                Profile Menu displayed                                    Profile Menu not displayed
+ |                                                                                   |
+ |                                                                                   ▼
+ |                                                                                   |
+ |                                                                                   |
+ |                                                                                   |
+ |                                                                                   ▼
+ |                                                                                   |
+ |                                                                                   | 
+ ▲                                                                                   | 
+ |                                                                                   | 
+ |                                                                                   ▼
+ |    Access Token successfully verified (interceptor --> verifyJWT middleware) <----||-----> Access Token missing or expired (interceptor --> verifyJWT middleware)
+ |                                  |                                                                                      |
+ |                                  |                                                                                      |
+ |                                  |                                                                                      |
+ |                                  ▼                                                                                      ▼
+ ▲                    request continues as per normal                                                        Call /refresh route (interceptor)   
+ |                                                                                                                         |
+ |                                                                                                                         |
+ |                                                                                                                         |
+ |                                                                      ▼--------<----------<----------<---------<---------▼    
+ |                                                                      |
+ |                                                                      |
+ |                                                                      |
+ |                                                                      ▼                                                         
+ ▲---< Refresh Token successfully verified, new Access Token sent, <----||-----> Refresh Token missing or expired (authController)
+       original request re-tried (authController)                                                 |
+                                                                                                  |
+                                                                                                  |
+                                                                                                  ▼
+                                                                              redirect to login (based on isLoggedIn state) 
+
+
+==========================================PROFILE PAGE==========================================
+
+Encountered difficulties when making request to server due to unintended re-renders or renders not
+occuring when necessary. 
+
+When utilizing the useEffect hook to tap the '/profile' route, was initially using the 'isLoggedIn' 
+state in the dependency array. With 'isLoggedIn' as the dependency array, if the access token was 
+expired, two sequential calls to the '/profile' route would be made, because in the axios instance's 
+interceptor, a call to the '/refresh' endpoint is executed, which consequently calls 'setLoggedIn' 
+state, triggering the useEffect hook to tap the '/profile' route a second time (since the dependency 
+'isLoggedIn' inevitably changes), but this time with an unexpired access token. For this reason, 
+'isLoggedIn' was precluded as a dependency.
+
+Using no dependency (and relying on the component's initial mount as the dependency) also resulted 
+in unforeseen issues, though. The issue was due to the fact that, if on the profile page and
+the browser is refreshed, the profile page would render before the 'ProfileContext' had a chance to
+update the 'isLoggedIn' state (by way of tapping the server's '/refresh' route), and since the 
+useEffect hook was no longer triggered by the 'isLoggedIn' state being updated, the Authorization 
+header (as part of the axios instance) carried undefined in place of the access token when the request 
+was made to the '/profile' endpoint because the 'isLoggedIn' state was not yet defined.
+
+          headers: {
+            Authorization: `Bearer ${isLoggedIn[0].accessToken}`,
+          },
+
+Therefore, the useState hook needed the most up-to-date state of 'isLoggedIn', but it could not 
+actually be used in the dependency array. Additionally, it was essential that if 'isLoggedIn' could
+not be used as the useState hook's dependency, that the request to '/profile' be sufficiently delayed
+(as opposed to made immeditately upon the page rendering), otherwise the access token would not yet
+be readily accessible.
+
+The solution to the above challenges were two-fold:
+
+1. Implemented useRef hook in order to seperately track updates to 'isLoggedIn' (within a useEffect 
+   hook). The implementation was follows (within the 'Profile' component):
+
+     const loggedInRef = React.useRef(null);
+
+     React.useEffect(() => {
+      loggedInRef.current = isLoggedIn;
+      console.log("loggedInRef.current: ", loggedInRef.current);
+     }, [isLoggedIn]);
+
+   Within the function that the original useEffect hook calls (the request to '/profile'), the 
+   Authorization header was changed such that it would reflect the most up-to-date state of 
+   'isLoggedIn':
+
+     headers: {
+      Authorization: `Bearer ${loggedInRef.current[0].accessToken}`,
+     },
+
+2. In order to ensure that the 'ProfileContext' had a chance to update the 'isLoggedIn' state properly,
+   the request to '/profile' was delayed using setTimeout:
+
+      React.useEffect(() => {
+      const delayedRequest = async () => {<...>}
+      setTimeout(delayedRequest, 500);
+      }, [])
+
+   500 milliseconds was (ostensibly) ample time to allow for the 'isLoggedIn' state to receive updates
+   after initial render. Also, in order to account for this 1/2 second buffer of time, a loading page
+   was Implemented.
+
+=======================================MISC. NOTES=======================================
+
+Ran Node.js in the terminal (simply type node and hit enter), then ran the following command:
+
+ require('crypto').randomBytes(64).toString('hex')
+
+The above generates a 128-character string, and was used to write the secrets in the .env file.

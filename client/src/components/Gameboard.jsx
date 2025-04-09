@@ -3,7 +3,7 @@ const Gameboard = ({}) => {
   const numbers = Array.from({ length: 10 }, (cVal, i) => i + 1);
 
   return (
-    <div className="mx-auto w-full max-w-md p-4 sm:max-w-lg md:max-w-2xl">
+    <div className="mx-auto w-full p-4 ~/sm:min-w-max ~sm/3xl:~max-w-sm/3xl">
       {/* Top row: number labels */}
       <div className="grid grid-cols-11">
         <div className="aspect-square"></div> {/* empty corner */}
